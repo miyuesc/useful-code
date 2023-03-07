@@ -1,26 +1,28 @@
 import { getRawType, notEmpty, notNull } from './tool'
 
+export type TreeNode = Record<string, any>
+
 export type FlatProps = {
   key?: string
   children?: string
 }
-
-export type TreeNode = {
-  [key: string]: string | TreeNode[] | unknown
-}
-
 /**
  * 获取一个树节点的所有子节点数组 ( 场景：将一个组织的 code 与该组织的子组织 code 合并到一个数组 )
  * @param { Object } node 包含子节点的数据对象
  * @param { ?{children?: string, key?: string}} props 默认关键字
  * @return { Array[string] } 关键字数组
  */
-export function getFlatNodeKey(node: TreeNode, props: FlatProps = {}): string[] {
+export function getFlatNodeKey(
+  node: TreeNode,
+  props: FlatProps = { key: 'id', children: 'children' }
+): string[] {
   const { key = 'id', children = 'children' } = props
   const result: string[] = []
-  node[key] && result.push(node[key] as string)
+
+  node[key] && result.push(<string>node[key])
+
   if (notEmpty(node[children])) {
-    ;(node[children] as TreeNode[]).reduce((target, child) => {
+    ;(node[children] as TreeNode[]).reduce((target: string[], child: TreeNode) => {
       if (notEmpty(child[children])) {
         target.push(...getFlatNodeKey(child, props))
       } else {
@@ -29,6 +31,7 @@ export function getFlatNodeKey(node: TreeNode, props: FlatProps = {}): string[] 
       return result
     }, result)
   }
+
   return result
 }
 
@@ -37,7 +40,6 @@ export type TreeNodeProps = {
   label?: string
   children?: string
 }
-
 /**
  * 获取一个数据在树形数组中对应的名称 ( 场景：根据code在组织树中查询对应的组织名称 )
  * @param { array } tree 包含子节点的数据对象

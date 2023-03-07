@@ -10,6 +10,7 @@ export type RawType =
   | 'function'
   | 'regexp'
   | 'date'
+
 export type Page = {
   pageNo?: number
   pageSize?: number
@@ -46,6 +47,7 @@ export function notNull(val: any): boolean {
  * @return { RawType } type
  */
 export function getRawType(value: any): RawType {
+  // @ts-ignore
   return Object.prototype.toString.call(value).slice(8, -1).toLowerCase()
 }
 
