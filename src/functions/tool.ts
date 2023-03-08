@@ -11,13 +11,12 @@ export type RawType =
   | 'regexp'
   | 'date'
 
-export type Page = {
-  pageNo?: number
-  pageSize?: number
-}
+export const NOOP = () => {}
 
-/* 空函数 */
-export function noop(): void {}
+/**
+ * Always return false.
+ */
+export const NO = () => false
 
 /**
  * 校验非空
@@ -41,16 +40,28 @@ export function notNull(val: any): boolean {
   return val !== undefined && val !== null
 }
 
-/**
- * 返回数据原始类型
- * @param value
- * @return { RawType } type
- */
+export const toTypeString = (value: unknown): string => Object.prototype.toString.call(value)
 export function getRawType(value: any): RawType {
-  // @ts-ignore
-  return Object.prototype.toString.call(value).slice(8, -1).toLowerCase()
+  return toTypeString(value).slice(8, -1).toLowerCase() as RawType
 }
 
+export const isArray = Array.isArray
+export const isObject = (val: unknown): val is Record<any, any> =>
+  val !== null && typeof val === 'object'
+export const isPlainObject = (val: unknown): val is object => getRawType(val) === 'object'
+export const isDate = (val: unknown): val is Date => getRawType(val) === 'date'
+export const isFunction = (val: unknown): val is Function => typeof val === 'function'
+export const isPromise = <T = any>(val: unknown): val is Promise<T> => {
+  return isObject(val) && isFunction(val.then) && isFunction(val.catch)
+}
+
+// 首字母大写
+export const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
+
+export type Page = {
+  pageNo?: number
+  pageSize?: number
+}
 /**
  * 重置一个空表格
  * @param tableCallback 处理表格为空
