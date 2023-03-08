@@ -11,15 +11,15 @@ export type RawType =
   | 'regexp'
   | 'date'
 
-export const NOOP = () => {}
+export const NOOP = (): void => {}
 
 /**
  * Always return false.
  */
-export const NO = () => false
+export const NO = (): false => false
 
 /**
- * 校验非空
+ * 简易非空校验
  * @param {*} val
  * @return boolean
  */
