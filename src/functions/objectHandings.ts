@@ -6,8 +6,8 @@ import { notNull } from './tool'
  * @param {*[]} source
  * @return {Object}
  */
-export function objectMerge(target: object, ...source: unknown[]) {
-  const newObject = {}
+export function objectMerge<T extends Record<string, unknown>>(target: T, ...source: T[]) {
+  const newObject: Record<string, unknown> = {}
 
   const getValue = (key: string): unknown | null => {
     const findRes = source.find((item) => notNull(item[key]))
@@ -24,7 +24,7 @@ export function objectMerge(target: object, ...source: unknown[]) {
  * @param {Object} source
  * @return {Array}
  */
-export function map2arr(source: Record<string, unknown>): unknown[] {
+export function map2keyArr(source: Record<string, unknown>): unknown[] {
   const arr = []
   for (const key of Object.keys(source)) {
     arr.push(source[key])
