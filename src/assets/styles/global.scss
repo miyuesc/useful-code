@@ -1,0 +1,71 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  //--c-text-primary: #282a32;
+  //--c-text-secondary: #686b87;
+  //--c-text-action: #404089;
+  //--c-accent-primary: #434ce8;
+  //--c-border-primary: #eff1f6;
+  //--c-background-primary: #ffffff;
+  //--c-background-secondary: #fdfcff;
+  //--c-background-tertiary: #ecf3fe;
+  //--c-background-quaternary: #e9ecf4;
+  //
+
+  --app-container-bg: #f3f6fd;
+  --content-container-bg: #ffffff;
+  --slider-width: 320px;
+  --main-padding: 24px;
+  --main-radius: 16px;
+  --secondary-radius: 8px;
+  --thirdary-radius: 4px;
+  --main-color: #1f1c2e;
+  --secondary-color: #4A4A4A;
+
+  --link-color: #1f1c2e;
+  --link-color-hover: #c3cff4;
+  --link-color-active: #fff;
+  --link-color-active-bg: #1f1c2e;
+  --projects-section: #fff;
+  --message-box-hover: #fafcff;
+  --message-box-border: #e9ebf0;
+  --more-list-bg: #fff;
+  --more-list-bg-hover:  #f6fbff;
+  --more-list-shadow: rgba(209, 209, 209, 0.4);
+  --button-bg: #1f1c24;
+  --search-area-bg: #fff;
+  --star: #1ff1c2e;
+  --message-btn: #fff;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--app-container-bg);
+  font-family: "DM Sans", sans-serif;
+}
+.useful-page-container {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  padding: 0 var(--main-padding) var(--main-padding) 0;
+}
+.page-content {
+  flex: 1;
+  overflow: hidden;
+  background-color: var(--content-container-bg);
+  border-radius: var(--main-radius);
+  padding: var(--main-padding);
+}

@@ -1,0 +1,23 @@
+.nav-header,
+.nav-header_logo,
+.nav-header_btns {
+  display: flex;
+  align-items: center;
+}
+
+.nav-header {
+  width: 100%;
+  height: var(--header-height);
+  padding: 0 var(--main-padding);
+}
+.nav-header_logo {
+  width: var(--slider-width);
+  color: var(--main-color);
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 700;
+}
+.nav-header_btns {
+  flex: 1;
+  justify-content: var(--header-btn-align);
+}

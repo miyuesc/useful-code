@@ -42,6 +42,14 @@ export default defineComponent({
   },
   setup(props, { slots }) {
     const computedStyle = computed(() => {
+      const style: CSSProperties = { height: `${(props.data / props.max) * 100}%` }
+      if (props.reverse) {
+        style.flexDirection = 'column-reverse'
+      }
+      return style
+    })
+
+    const computedData = computed(() => {
       let data: string = props.data.toString()
       if (props.format && typeof props.format === 'function') {
         data = props.format(data)
@@ -51,14 +59,8 @@ export default defineComponent({
       }
       return data
     })
-    const computedData = computed(() => {
-      const style: CSSProperties = { height: `${(props.data / props.max) * 100}%` }
-      if (props.reverse) {
-        style.flexDirection = 'column-reverse'
-      }
-      return style
-    })
-    return (
+
+    return () => (
       <div class="weighted-cylinder">
         <div class="weighted-cylinder__header"></div>
         <div class="weighted-cylinder__content">
