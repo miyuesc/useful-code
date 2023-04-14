@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 
 import '@/assets/styles/global.scss'
+import '@/assets/styles/translations.scss'
 
 import 'splitting/dist/splitting.css'
 import 'splitting/dist/splitting-cells.css'

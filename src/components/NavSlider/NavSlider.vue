@@ -1,14 +1,13 @@
 <template>
   <div class="nav-slider">
-    <div class="nav-slider_list">
-      <div v-if="childNavs" class="nav-slider_btns">
-        <div
-          v-for="nav in childNavs"
-          :key="nav.path"
-          :class="{ 'nav-slider_btn': true, 'active-slider_btn': activeNav === nav.name }"
-        >
-          <span class="nav-slider_btn-text">{{ nav.meta?.translateName || nav.name }}</span>
-        </div>
+    <div v-if="childNavs" class="nav-slider_list">
+      <div
+        v-for="nav in childNavs"
+        :key="nav.path"
+        :class="{ 'nav-slider_btn': true, 'active-slider_btn': activeNav === nav.name }"
+        @click="$emit('slider-click', nav)"
+      >
+        <span class="nav-slider_btn-text">{{ nav.meta?.translateName || nav.name }}</span>
       </div>
     </div>
   </div>
@@ -28,6 +27,8 @@
       default: ''
     }
   })
+
+  defineEmits(['slider-click'])
 </script>
 
 <style lang="scss">

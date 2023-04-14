@@ -4,7 +4,7 @@ import menusObject, { formatMenusObjectToArray } from '@/router/menu-util'
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    component: () => import('@/personalInfo/personalHomePage.vue')
+    component: () => import('@/staticViews/personalHomePage.vue')
   },
   ...(formatMenusObjectToArray(menusObject) as RouteRecordRaw[])
 ]

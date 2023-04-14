@@ -8,6 +8,7 @@ body {
 }
 * {
   box-sizing: border-box;
+  user-select: none;
 }
 
 :root {
@@ -22,9 +23,9 @@ body {
   //--c-background-quaternary: #e9ecf4;
   //
 
-  --app-container-bg: #f3f6fd;
+  --app-container-bg: #f6f8ff;
   --content-container-bg: #ffffff;
-  --slider-width: 320px;
+  --slider-width: 240px;
   --main-padding: 24px;
   --main-radius: 16px;
   --secondary-radius: 8px;
@@ -33,9 +34,16 @@ body {
   --secondary-color: #4A4A4A;
 
   --link-color: #1f1c2e;
-  --link-color-hover: #c3cff4;
+  --link-color-hover-bg: #c3cff4;
   --link-color-active: #fff;
   --link-color-active-bg: #1f1c2e;
+
+  --slider-color: #333333;
+  --slider-color-hover-bg: #c3cff4;
+  --slider-color-active: #4067f9;
+  --slider-color-active-bg: #d5deff;
+
+
   --projects-section: #fff;
   --message-box-hover: #fafcff;
   --message-box-border: #e9ebf0;
@@ -60,7 +68,7 @@ body {
   display: flex;
   flex: 1;
   overflow: hidden;
-  padding: 0 var(--main-padding) var(--main-padding) 0;
+  padding: 0 var(--main-padding) var(--main-padding) var(--main-padding);
 }
 .page-content {
   flex: 1;

@@ -11,8 +11,6 @@
     localStorage.getItem('menusObject') || '{}'
   )
 
-  console.log(menusObject)
-
   const menus = ref<NavItem[]>(formatMenusObjectToArray(menusObject))
   const childMenus = ref<NavItem[] | undefined>()
 
@@ -28,6 +26,10 @@
     }
     router.push({ path: nav.path })
   }
+  const pageToSubModule = (nav: NavItem) => {
+    console.log(nav, `/${nav.meta!.parent}/${nav.path}`)
+    router.push({ path: `/${nav.meta!.parent}/${nav.path}` })
+  }
 
   const route = useRoute()
   watch(
@@ -35,6 +37,7 @@
     (value, oldValue) => {
       if (value !== oldValue) {
         activeNav.value = ((route.meta.parent || route.name) as string | undefined) || ''
+        activeChildNav.value = (route.name as string) || ''
       }
     },
     { immediate: true }
@@ -59,7 +62,14 @@
     </template>
   </NavHeader>
   <div class="useful-page-container">
-    <NavSlider v-if="childMenus" :child-navs="childMenus" />
+    <transition name="fade-left">
+      <NavSlider
+        v-if="childMenus"
+        :child-navs="childMenus"
+        :active-nav="activeChildNav"
+        @slider-click="pageToSubModule"
+      />
+    </transition>
     <div class="page-content">
       <router-view />
     </div>

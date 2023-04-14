@@ -27,19 +27,18 @@ const addChild = (name: string, moduleKey: string, parent?: string) => {
       parent,
       translateName: translator('menus', name)
     }
-    if (menusObject[parent] && menusObject[parent].children) {
+    if (menusObject[parent]) {
       menusObject[parent].children!.push({ ...childMenu, meta })
     } else {
       menusObject[parent] = {
         name: parent,
         path: `/${parent}`,
-        component: modules[moduleKey] || (() => import('@/personalInfo/personalHomePage.vue')),
+        component: modules[parent] || (() => import('@/staticViews/ChildrenRouterView.vue')),
         meta: { translateName: translator('menus', parent) },
         children: [{ ...childMenu, meta }]
       }
     }
   } else {
-    console.log('name', name, translator('menus', name))
     menusObject[name] = {
       ...childMenu,
       path: `/${name}`,
@@ -49,7 +48,6 @@ const addChild = (name: string, moduleKey: string, parent?: string) => {
 }
 
 const classification = (modules: ComponentModules) => {
-  console.log('modules', modules)
   // 把views文件夹下的所有vue文件自动生成映射关系
   Object.keys(modules).forEach((key: string) => {
     const nameMatch: string[] | null = key.match(/^\/src\/views\/(.+)\.(vue|tsx)/)
@@ -60,6 +58,7 @@ const classification = (modules: ComponentModules) => {
     // 处理菜单和页面组件名称
     const componentPath: string = nameMatch[1]
     const [parent, child] = componentPath.split('/')
+    console.log(key, parent, child)
     if (!child) {
       addChild(parent, key)
     } else {
@@ -79,5 +78,7 @@ export const formatMenusObjectToArray = (menusObject: Record<string, MenuItem>):
     children: menusObject[key].children || undefined
   }))
 }
+
+console.log(menusObject)
 
 export default menusObject

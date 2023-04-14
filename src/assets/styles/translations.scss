@@ -1,0 +1,12 @@
+.fade-left-enter-active,
+.fade-left-leave-active {
+  transition: all 0.5s ease;
+}
+
+.fade-left-enter-from,
+.fade-left-leave-to {
+  opacity: 0;
+  width: 0;
+  padding: 0;
+  margin: 0;
+}

@@ -20,4 +20,23 @@
 .nav-header_btns {
   flex: 1;
   justify-content: var(--header-btn-align);
+  .nav-header_btn {
+    color: var(--link-color);
+    transition: all ease 0.2s;
+    padding: 6px 12px;
+    border-radius: var(--secondary-radius);
+    font-weight: 500;
+    cursor: pointer;
+    & + .nav-header_btn {
+      margin-left: 20px;
+    }
+    &:hover {
+      color: var(--link-color-active);
+      background-color: var(--link-color-hover-bg);
+    }
+    &.active-header_btn {
+      color: var(--link-color-active);
+      background-color: var(--link-color-active-bg);
+    }
+  }
 }
