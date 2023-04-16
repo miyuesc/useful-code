@@ -1,10 +1,11 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import menusObject, { formatMenusObjectToArray } from '@/router/menu-util'
+import PersonalHomePage from '@/staticViews/PersonalHomePage.vue'
 
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    component: () => import('@/staticViews/personalHomePage.vue')
+    component: PersonalHomePage
   },
   ...(formatMenusObjectToArray(menusObject) as RouteRecordRaw[])
 ]
