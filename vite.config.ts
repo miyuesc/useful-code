@@ -11,5 +11,15 @@ export default defineConfig({
       'vue-i18n': 'vue-i18n/dist/vue-i18n.cjs.js',
       '@': path.resolve(__dirname, 'src/')
     }
+  },
+  server: {
+    proxy: {
+      '/JJ': {
+        target: 'https://api.juejin.cn',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/JJ/, '')
+      }
+    }
   }
 })
