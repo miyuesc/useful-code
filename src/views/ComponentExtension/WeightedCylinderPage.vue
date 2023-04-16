@@ -9,6 +9,8 @@
     setTimeout(updateData, 1 * 1000)
   }
 
+  const numberFixed = (num: number): string => (num * 100).toFixed(2)
+
   onMounted(updateData)
 </script>
 
@@ -20,7 +22,7 @@
     <div class="demos-content">
       <WeightedCylinder
         :data="nums[1]"
-        :format="(val) => (val * 100).toFixed(2)"
+        :format="numberFixed"
         title="占比"
         unit="%"
       ></WeightedCylinder>

@@ -10,18 +10,4 @@
   const name = ref<string | undefined>('personalHomePage')
 </script>
 
-<script lang="ts">
-  import { defineComponent, ref } from 'vue'
-
-  export default defineComponent({
-    name: 'PersonalHomePage',
-    setup() {
-      const name = ref<string | undefined>('personalHomePage')
-      return {
-        name
-      }
-    }
-  })
-</script>
-
 <style lang="scss" scoped></style>

@@ -10,18 +10,4 @@
   const name = ref<string | undefined>('TestImport')
 </script>
 
-<script lang="ts">
-  import { defineComponent, ref } from 'vue'
-
-  export default defineComponent({
-    name: 'TestImport',
-    setup() {
-      const name = ref<string | undefined>('TestImport')
-      return {
-        name
-      }
-    }
-  })
-</script>
-
 <style lang="scss" scoped></style>
