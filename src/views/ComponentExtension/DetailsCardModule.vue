@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import { ref, h, VNodeChild } from 'vue'
+  import { ref, h } from 'vue'
   import { NButton } from 'naive-ui'
   import type { DetailPropItem } from '@/components/DetailsCard'
   import DetailsCard from '@/components/DetailsCard'
@@ -13,7 +13,9 @@
     syncState: {
       label: '同步状态',
       hidden: false,
-      render: (): VNodeChild => h(NButton, {}, '同步')
+      render() {
+        return h(NButton, {}, () => '同步')
+      }
     },
     connectType: { label: '连接方式' },
     prdCode: { label: '产品类别' },

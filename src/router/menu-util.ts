@@ -58,7 +58,6 @@ const classification = (modules: ComponentModules) => {
     // 处理菜单和页面组件名称
     const componentPath: string = nameMatch[1]
     const [parent, child] = componentPath.split('/')
-    console.log(key, parent, child)
     if (!child) {
       addChild(parent, key)
     } else {
@@ -78,7 +77,5 @@ export const formatMenusObjectToArray = (menusObject: Record<string, MenuItem>):
     children: menusObject[key].children || undefined
   }))
 }
-
-console.log(menusObject)
 
 export default menusObject
