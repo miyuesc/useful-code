@@ -1,0 +1,1 @@
+import{d as s,r as a,B as t,D as n,G as o,K as c}from"./index-886d25fe.js";const r={class:"component"},m=s({__name:"JuejinPostsPage",setup(_){const e=a("JuejinPostsPage");return(i,l)=>(t(),n("div",r,[o("h1",null,c(e.value),1)]))}});export{m as default};

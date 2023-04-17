@@ -1,1 +1,0 @@
-import{d as a,r as t,o as s,c as o,a as n,t as r}from"./index-6b98e232.js";const c={class:"component"},d=a({__name:"DetailsCard",setup(l){const e=t("DetailsCard");return(_,i)=>(s(),o("div",c,[n("h1",null,r(e.value),1)]))}});export{d as default};
