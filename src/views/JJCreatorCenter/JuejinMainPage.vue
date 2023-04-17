@@ -11,9 +11,9 @@
   const name = ref<string | undefined>('JuejinMainPage')
 
   onMounted(async () => {
-    const data = await getCreatorDailyCards()
-
-    console.log(data)
+    // const data = await getCreatorDailyCards()
+    //
+    // console.log(data)
   })
 </script>
 

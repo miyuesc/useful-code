@@ -1,7 +1,8 @@
 export default {
   //
   ComponentExtension: 'Vue扩展组件',
-  WeightedCylinderPage: '权重柱状图',
+  WeightedCylinderModule: '权重柱状图',
+  DetailsCardModule: '栅格详情卡片',
   //
   JJCreatorCenter: '掘金创作者中心',
   JuejinMainPage: '数据概览',

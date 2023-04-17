@@ -1,0 +1,16 @@
+.detail-info-board {
+  box-sizing: border-box;
+}
+.info-item-content {
+  font-size: 0.8rem;
+  line-height: 32px;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+.info-content_value {
+  overflow: hidden;
+  word-break: break-word;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

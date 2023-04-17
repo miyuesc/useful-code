@@ -1,3 +1,3 @@
 export default {
-  WeightedCylinderPage: 'Weighted Cylinder'
+  WeightedCylinderModule: 'Weighted Cylinder'
 }
