@@ -1,1 +1,0 @@
-import{d as a,r as n,o,B as s,D as t,G as c,K as r}from"./index-886d25fe.js";const i={class:"component"},m=a({__name:"JuejinMainPage",setup(_){const e=n("JuejinMainPage");return o(async()=>{}),(l,p)=>(s(),t("div",i,[c("h1",null,r(e.value),1)]))}});export{m as default};
