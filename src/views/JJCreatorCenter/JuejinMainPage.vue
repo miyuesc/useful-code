@@ -6,7 +6,6 @@
 
 <script lang="ts" setup>
   import { onMounted, ref } from 'vue'
-  import { getCreatorDailyCards } from '@/requests/juejin'
 
   const name = ref<string | undefined>('JuejinMainPage')
 
