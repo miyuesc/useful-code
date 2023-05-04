@@ -2,9 +2,6 @@ import { notNull } from './tool'
 
 /**
  * 简单合并对象一级属性，只有target 属性为 null或者undefined 时使用 source 中的对象的属性
- * @param {Object} target
- * @param {*[]} source
- * @return {Object}
  */
 export function objectMerge<T extends Record<string, unknown>>(target: T, ...source: T[]) {
   const newObject: Record<string, unknown> = {}
@@ -21,8 +18,6 @@ export function objectMerge<T extends Record<string, unknown>>(target: T, ...sou
 
 /**
  * 对象转化为数组
- * @param {Object} source
- * @return {Array}
  */
 export function map2keyArr(source: Record<string, unknown>): unknown[] {
   const arr = []
