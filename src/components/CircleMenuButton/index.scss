@@ -71,13 +71,14 @@
   opacity: 0;
   display: inline-block;
   text-align: center;
-  transition-delay: 0s;
   i {
     pointer-events: auto;
     display: inline-block;
     cursor: pointer;
   }
-  &:hover {
+  &:hover i {
+    transition-delay: 0s;
+    transition: all ease 0.2s;
     color: #5c67ff;
   }
 }
