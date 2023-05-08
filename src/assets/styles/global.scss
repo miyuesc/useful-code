@@ -12,17 +12,6 @@ body {
 }
 
 :root {
-  //--c-text-primary: #282a32;
-  //--c-text-secondary: #686b87;
-  //--c-text-action: #404089;
-  //--c-accent-primary: #434ce8;
-  //--c-border-primary: #eff1f6;
-  //--c-background-primary: #ffffff;
-  //--c-background-secondary: #fdfcff;
-  //--c-background-tertiary: #ecf3fe;
-  //--c-background-quaternary: #e9ecf4;
-  //
-
   --app-container-bg: #f6f8ff;
   --content-container-bg: #ffffff;
   --slider-width: 240px;
@@ -52,8 +41,10 @@ body {
   --more-list-shadow: rgba(209, 209, 209, 0.4);
   --button-bg: #1f1c24;
   --search-area-bg: #fff;
-  --star: #1ff1c2e;
+  --star: #1ff1c2;
   --message-btn: #fff;
+
+  --trans-ease: all ease 0.2s;
 }
 
 #app {
@@ -76,4 +67,30 @@ body {
   background-color: var(--content-container-bg);
   border-radius: var(--main-radius);
   padding: var(--main-padding);
+}
+
+.sources-list {
+  display: flex;
+  flex-direction: column;
+  .sources-list_item {
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    &-name,
+    &-address {
+      margin-left: 12px;
+    }
+  }
+  .sources-list_item-author {
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+  .sources-list_item-address {
+    color: var(--link-color-hover-bg);
+    transition: var(--trans-ease);
+    &:hover {
+      cursor: pointer;
+      color: var(--slider-color-active-bg);
+    }
+  }
 }

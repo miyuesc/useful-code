@@ -9,5 +9,8 @@ export default {
   JuejinMainPage: '数据概览',
   JuejinPostsPage: '已发布文章',
   //
+  ExcellentResources: '资源列表',
+  CssSources: 'CSS 资源库',
+  //
   Test: '测试'
 }
