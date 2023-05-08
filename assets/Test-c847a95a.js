@@ -1,0 +1,1 @@
+import{d as s,r as a,a as t,b as n,e as o,N as r}from"./index-ca202034.js";const c={class:"Test"},m=s({__name:"Test",setup(_){const e=a("Test");return(l,p)=>(t(),n("div",c,[o("h1",null,r(e.value)+" Page",1)]))}});export{m as default};
