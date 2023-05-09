@@ -4,6 +4,7 @@ export default {
   WeightedCylinderModule: '权重柱状图',
   DetailsCardModule: '栅格详情卡片',
   CircleMenuButtonModule: '圆环菜单',
+  HighlightTextModule: '高亮文本',
   //
   JJCreatorCenter: '掘金创作者中心',
   JuejinMainPage: '数据概览',

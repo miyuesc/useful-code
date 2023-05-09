@@ -1,33 +1,60 @@
 <script lang="ts" setup>
-  import { ref, shallowRef } from 'vue'
+  import { shallowRef } from 'vue'
 
   type SourceItem = {
     author: string
     name: string
-    address: string
+    website?: string
+    github?: string
+    desc?: string
   }
 
-  const name = ref<string | undefined>('JuejinMainPage')
-
   const sourcesList = shallowRef<SourceItem[]>([
-    { author: 'Chokcoco', name: 'Inspiration', address: 'https://csscoco.com/inspiration/#/' },
-    { author: 'Chokcoco', name: 'Css 3', address: 'https://github.com/chokcoco/css3-' },
-    { author: 'animate-css', name: 'animate.css', address: 'https://animate.style/' },
+    {
+      author: 'Chokcoco',
+      name: 'Inspiration',
+      website: 'https://csscoco.com/inspiration/#/',
+      github: 'https://github.com/chokcoco/CSS-Inspiration',
+      desc: '这里可以让你寻找到使用或者是学习 CSS 的灵感，以分类的形式，展示不同 CSS 属性或者不同的课题使用 CSS 来解决的各种方法。'
+    },
+    {
+      author: 'Chokcoco',
+      name: 'Css 3',
+      github: 'https://github.com/chokcoco/css3-',
+      desc: 'CSS3 实现各类 3D && 3D 行星动画效果'
+    },
+    {
+      author: 'animate-css',
+      name: 'animate.css',
+      website: 'https://animate.style/',
+      github: 'https://github.com/animate-css/animate.css',
+      desc: '一个跨浏览器的CSS动画库。就像一件简单的事情一样容易使用。'
+    },
     {
       author: 'LeaVerou',
       name: 'css3patterns',
-      address: 'https://projects.verou.me/css3patterns/#'
+      website: 'https://projects.verou.me/css3patterns/#',
+      github: 'https://github.com/LeaVerou/css3patterns',
+      desc: '利用CSS渐变实现的多种背景图片'
     },
     {
       author: 'jonsuh',
       name: 'hamburgers',
-      address: 'https://jonsuh.com/hamburgers/'
+      website: 'https://jonsuh.com/hamburgers/',
+      github: 'https://github.com/jonsuh/hamburgers',
+      desc: '一些简约且美观的菜单按钮图标动画'
     },
-    { author: 'sdras', name: 'cssgridgenerator', address: 'https://cssgrid-generator.netlify.app/' }
+    {
+      author: 'sdras',
+      name: 'cssgridgenerator',
+      website: 'https://cssgrid-generator.netlify.app/',
+      github: 'https://github.com/sdras/cssgridgenerator',
+      desc: 'CSS grid 布局样式生成器'
+    }
   ])
 
   const goToSource = (source: SourceItem) => {
-    window.open(source.address, '_blank')
+    window.open(source.website, '_blank')
   }
 </script>
 
@@ -38,7 +65,7 @@
       <div v-for="s in sourcesList" :key="s.name" class="sources-list_item">
         <div class="sources-list_item-author">{{ s.author }}：</div>
         <div class="sources-list_item-name">《{{ s.name }}》</div>
-        <div class="sources-list_item-address" @click="goToSource(s)">{{ s.address }}</div>
+        <div class="sources-list_item-website" @click="goToSource(s)">{{ s.website }}</div>
       </div>
     </div>
   </div>

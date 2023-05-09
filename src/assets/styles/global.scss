@@ -77,7 +77,7 @@ body {
     display: flex;
     align-items: center;
     &-name,
-    &-address {
+    &-website {
       margin-left: 12px;
     }
   }
@@ -85,7 +85,7 @@ body {
     font-weight: bold;
     font-size: 1.2rem;
   }
-  .sources-list_item-address {
+  .sources-list_item-website {
     color: var(--link-color-hover-bg);
     transition: var(--trans-ease);
     &:hover {
