@@ -1,5 +1,10 @@
 <script lang="ts" setup>
-  import { shallowRef } from 'vue'
+  import { shallowRef, h } from 'vue'
+  import { NDataTable, NTag, NButton } from 'naive-ui'
+  import { useI18n } from 'vue-i18n'
+  import type { DataTableColumns } from 'naive-ui'
+
+  const { t } = useI18n()
 
   type SourceItem = {
     author: string
@@ -50,8 +55,80 @@
       website: 'https://cssgrid-generator.netlify.app/',
       github: 'https://github.com/sdras/cssgridgenerator',
       desc: 'CSS grid 布局样式生成器'
+    },
+    {
+      author: 'l-hammer',
+      name: 'You-need-to-know-css',
+      website: 'https://lhammer.cn/You-need-to-know-css/#/',
+      github: 'https://github.com/l-hammer/You-need-to-know-css',
+      desc: 'Web开发者应该掌握的CSS tricks'
+    },
+    {
+      author: 'codrops',
+      name: 'PageTransitions',
+      website: 'https://tympanus.net/Development/PageTransitions/',
+      github: 'https://github.com/codrops/PageTransitions',
+      desc: '一个使用CSS动画的各种页面过渡效果的展示集。'
     }
   ])
+
+  const tableColumns: DataTableColumns<SourceItem> = [
+    {
+      title: t('sources.Author'),
+      key: 'author',
+      minWidth: 200,
+      render(row) {
+        return h(
+          NTag,
+          { type: 'info', bordered: false },
+          {
+            default: () => row.author
+          }
+        )
+      }
+    },
+    {
+      title: t('sources.Name'),
+      minWidth: 200,
+      key: 'name'
+    },
+    {
+      title: t('sources.Website'),
+      key: 'website',
+      render(row) {
+        if (row.website) {
+          return h(
+            NButton,
+            { text: true, type: 'info', tag: 'a', href: row.website, target: '_blank' },
+            {
+              default: () => row.website
+            }
+          )
+        }
+        return h('span', '-')
+      }
+    },
+    {
+      title: t('sources.Github'),
+      key: 'github',
+      render(row) {
+        if (row.github) {
+          return h(
+            NButton,
+            { text: true, type: 'info', tag: 'a', href: row.github, target: '_blank' },
+            {
+              default: () => row.github
+            }
+          )
+        }
+        return h('span', '-')
+      }
+    },
+    {
+      title: t('sources.Description'),
+      key: 'desc'
+    }
+  ]
 
   const goToSource = (source: SourceItem) => {
     window.open(source.website, '_blank')
@@ -61,12 +138,13 @@
 <template>
   <div class="sources">
     <h1>{{ $t('CssSources') }}</h1>
-    <div class="sources-list">
-      <div v-for="s in sourcesList" :key="s.name" class="sources-list_item">
-        <div class="sources-list_item-author">{{ s.author }}：</div>
-        <div class="sources-list_item-name">《{{ s.name }}》</div>
-        <div class="sources-list_item-website" @click="goToSource(s)">{{ s.website }}</div>
-      </div>
-    </div>
+    <!--    <div class="sources-list">-->
+    <!--      <div v-for="s in sourcesList" :key="s.name" class="sources-list_item">-->
+    <!--        <div class="sources-list_item-author">{{ s.author }}：</div>-->
+    <!--        <div class="sources-list_item-name">《{{ s.name }}》</div>-->
+    <!--        <div class="sources-list_item-website" @click="goToSource(s)">{{ s.website }}</div>-->
+    <!--      </div>-->
+    <!--    </div>-->
+    <n-data-table :data="sourcesList" :columns="tableColumns" />
   </div>
 </template>
