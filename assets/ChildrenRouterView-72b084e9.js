@@ -1,0 +1,1 @@
+import{_ as o,a as t,f as r,x as a,T as n,e as s,U as c}from"./index-832fedb6.js";const _={};function i(f,l){const e=c("router-view");return t(),r(n,{name:"scale"},{default:a(()=>[s(e)]),_:1})}const d=o(_,[["render",i]]);export{d as default};
