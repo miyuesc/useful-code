@@ -71,7 +71,15 @@
       />
     </transition>
     <div class="page-content">
-      <router-view />
+      <!--      <transition name="scale">-->
+      <!--        <router-view />-->
+      <!--      </transition>-->
+
+      <router-view v-slot="{ Component }">
+        <transition name="scale">
+          <component :is="Component" />
+        </transition>
+      </router-view>
     </div>
   </div>
 </template>
