@@ -94,3 +94,36 @@ body {
     }
   }
 }
+
+
+div::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+  background: transparent;
+}
+
+div::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+div::-webkit-scrollbar-thumb {
+  min-height: 80px;
+  background: rgb(0 0 0 / 40%);
+  background-clip: content-box;
+}
+
+div::-webkit-scrollbar-thumb,
+div::-webkit-scrollbar-track {
+  border: 5px solid transparent;
+  border-radius: 999px;
+}
+
+div::-webkit-scrollbar-track {
+  box-shadow: inset 1px 1px 12px transparent;
+}
+
+div::-webkit-scrollbar-thumb,
+div::-webkit-scrollbar-track {
+  border: 5px solid transparent;
+  border-radius: 999px;
+}

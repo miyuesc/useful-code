@@ -10,6 +10,9 @@ export default {
   JuejinMainPage: '数据概览',
   JuejinPostsPage: '已发布文章',
   //
+  SpinLoading: 'CSS 简易加载动画',
+  ComplexSpinLoading: 'CSS 复杂加载动画',
+  //
   ExcellentResources: '资源列表',
   CssSources: 'CSS 资源库',
   //
