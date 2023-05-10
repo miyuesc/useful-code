@@ -29,6 +29,13 @@
       desc: 'CSS3 实现各类 3D && 3D 行星动画效果'
     },
     {
+      author: 'XboxYan',
+      name: 'coupon',
+      github: 'https://github.com/XboxYan/coupon',
+      website: 'https://coupon.codelabo.cn/',
+      desc: '生成各种优惠券元素的CSS代码'
+    },
+    {
       author: 'animate-css',
       name: 'animate.css',
       website: 'https://animate.style/',
