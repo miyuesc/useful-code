@@ -1,0 +1,1 @@
+import{_ as r,Y as s,a as e,f as o,x as t,e as c,Z as _,T as i}from"./index-e4dd6886.js";const l={};function f(u,m){const n=s("router-view");return e(),o(n,null,{default:t(({Component:a})=>[c(i,{name:"scale"},{default:t(()=>[(e(),o(_(a)))]),_:2},1024)]),_:1})}const p=r(l,[["render",f]]);export{p as default};
