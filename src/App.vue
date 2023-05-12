@@ -62,7 +62,7 @@
     </template>
   </NavHeader>
   <div class="useful-page-container">
-    <transition name="fade-left">
+    <transition name="fade-left" mode="out-in">
       <NavSlider
         v-if="childMenus"
         :child-navs="childMenus"
@@ -75,9 +75,9 @@
       <!--        <router-view />-->
       <!--      </transition>-->
 
-      <router-view v-slot="{ Component }">
+      <router-view v-slot="{ Component, route: currentRoute }">
         <transition name="scale">
-          <component :is="Component" />
+          <component :is="Component" :key="currentRoute.path" class="content-body" />
         </transition>
       </router-view>
     </div>

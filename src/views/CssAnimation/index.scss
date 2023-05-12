@@ -3,11 +3,8 @@ $--loader-size: 200px;
 $--bg-color-1: #ed5565;
 
 .spin-loading-list {
-  width: 100%;
-  height: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fill, $--loader-size);
-  overflow-y: auto;
 }
 
 .loader {

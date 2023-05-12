@@ -11,11 +11,18 @@ body {
   user-select: none;
 }
 
+h1,
+h2,
+h3 {
+  margin: 0;
+}
+
 :root {
   --app-container-bg: #f6f8ff;
   --content-container-bg: #ffffff;
   --slider-width: 240px;
   --main-padding: 24px;
+  --content-padding: 16px;
   --main-radius: 16px;
   --secondary-radius: 8px;
   --thirdary-radius: 4px;
@@ -63,11 +70,27 @@ body {
 }
 .page-content {
   flex: 1;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   position: relative;
   background-color: var(--content-container-bg);
   border-radius: var(--main-radius);
   padding: var(--main-padding);
+
+  >div.content-body {
+    position: absolute;
+    left: var(--content-padding);
+    top: var(--content-padding);
+    right: var(--content-padding);
+    bottom: var(--content-padding);
+  }
+
+  a.n-button {
+    max-width: 200px;
+    white-space: pre-wrap;
+    text-overflow: ellipsis;
+    word-break: break-word;
+  }
 }
 
 .scale-enter-active,

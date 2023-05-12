@@ -41,8 +41,6 @@
 <style scoped lang="scss">
   .demo-page-container {
     display: flex;
-    width: 100%;
-    height: 100%;
   }
   .demos-content {
     margin: 100px auto;

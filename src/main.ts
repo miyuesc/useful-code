@@ -1,6 +1,8 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 
+import '@/assets/styles/normalize.css'
+
 import '@/assets/styles/global.scss'
 import '@/assets/styles/translations.scss'
 

@@ -97,7 +97,6 @@
 <style scoped lang="scss">
   .animation-box {
     background-color: rgb(10, 10, 10);
-    height: 100%;
     margin: 0;
     overflow: hidden;
     position: relative;
@@ -113,6 +112,7 @@
     border-radius: 1vmax;
     position: absolute;
     transition: transform 800ms ease;
+    overflow: hidden;
   }
 
   .tile:hover {
@@ -125,9 +125,7 @@
   }
 
   .tile > img {
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
+    object-fit: fill;
     border-radius: inherit;
     opacity: 0;
     transition: opacity 800ms ease, transform 800ms ease;

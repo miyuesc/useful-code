@@ -16,6 +16,13 @@
 
   const sourcesList = shallowRef<SourceItem[]>([
     {
+      author: 'Greg Smith',
+      name: '学习CSS布局',
+      website: 'https://zh.learnlayout.com/',
+      github: 'https://github.com/incompl/learnlayout',
+      desc: '教授的是现在广泛使用于网站布局领域的CSS基础。'
+    },
+    {
       author: 'Chokcoco',
       name: 'Inspiration',
       website: 'https://csscoco.com/inspiration/#/',
@@ -101,6 +108,7 @@
     },
     {
       title: t('sources.Website'),
+      minWidth: 200,
       key: 'website',
       render(row) {
         if (row.website) {
@@ -117,6 +125,7 @@
     },
     {
       title: t('sources.Github'),
+      minWidth: 200,
       key: 'github',
       render(row) {
         if (row.github) {
@@ -133,13 +142,10 @@
     },
     {
       title: t('sources.Description'),
+      minWidth: 300,
       key: 'desc'
     }
   ]
-
-  const goToSource = (source: SourceItem) => {
-    window.open(source.website, '_blank')
-  }
 </script>
 
 <template>

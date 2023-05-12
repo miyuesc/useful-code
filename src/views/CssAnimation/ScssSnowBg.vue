@@ -12,8 +12,6 @@
 
 <style scoped lang="scss">
   .scss-snow-bg {
-    width: 100%;
-    height: 100%;
     background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
     overflow: hidden;
     filter: drop-shadow(0 0 10px white);

@@ -16,6 +16,7 @@ export default {
   //
   ExcellentResources: '资源列表',
   CssSources: 'CSS 资源库',
+  StudySources: '前端学习资源库',
   //
   Test: '测试'
 }

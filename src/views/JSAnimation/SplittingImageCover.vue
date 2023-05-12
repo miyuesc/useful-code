@@ -46,15 +46,15 @@
 </template>
 
 <style lang="scss">
-  .splitting-image-cover {
-    max-width: 800px;
-    max-height: 494px;
-    position: fixed;
+  .splitting-image-cover.content-body {
+    position: fixed !important;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     z-index: 1;
+    max-width: 800px;
+    max-height: 494px;
 
     display: flex;
     flex-wrap: wrap;
