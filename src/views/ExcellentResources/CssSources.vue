@@ -83,6 +83,33 @@
       website: 'https://tympanus.net/Development/PageTransitions/',
       github: 'https://github.com/codrops/PageTransitions',
       desc: '一个使用CSS动画的各种页面过渡效果的展示集。'
+    },
+    {
+      author: '9elements',
+      name: 'fancy-border-radius',
+      website: 'https://9elements.github.io/fancy-border-radius/',
+      github: 'https://github.com/9elements/fancy-border-radius',
+      desc: 'CSS border radius 可视化编辑器。'
+    },
+    {
+      author: 'brumm',
+      name: 'smooth shadow',
+      website: 'https://shadows.brumm.af/',
+      desc: '平滑阴影生成器。'
+    },
+    {
+      author: 'adamgiebl',
+      name: 'neumorphism',
+      website: 'https://neumorphism.io/',
+      github: 'https://github.com/adamgiebl/neumorphism',
+      desc: '拟态化阴影生成器。'
+    },
+    {
+      author: 'argyleink',
+      name: 'transition.css',
+      website: 'https://transition.style/',
+      github: 'https://github.com/argyleink/transition.css',
+      desc: '过渡动画。'
     }
   ])
 
