@@ -98,6 +98,12 @@
       desc: '平滑阴影生成器。'
     },
     {
+      author: 'Sébastien Noël',
+      name: 'fffuel',
+      website: 'https://fffuel.co/',
+      desc: '工具库。'
+    },
+    {
       author: 'adamgiebl',
       name: 'neumorphism',
       website: 'https://neumorphism.io/',
