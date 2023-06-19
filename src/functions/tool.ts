@@ -36,7 +36,7 @@ export function notEmpty(val: any): boolean {
   return true
 }
 
-export function notNull(val: any): boolean {
+export function notNull(val: unknown): boolean {
   return val !== undefined && val !== null
 }
 
