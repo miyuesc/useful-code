@@ -104,6 +104,12 @@
       desc: '工具库。'
     },
     {
+      author: 'LukyVj',
+      name: `Buttons you'll Dig`,
+      website: 'buttons.cool',
+      desc: '按钮合集。'
+    },
+    {
       author: 'adamgiebl',
       name: 'neumorphism',
       website: 'https://neumorphism.io/',

@@ -5,6 +5,7 @@ import '@/assets/styles/normalize.css'
 
 import '@/assets/styles/global.scss'
 import '@/assets/styles/translations.scss'
+import '@/assets/styles/flow-design.scss'
 
 import 'splitting/dist/splitting.css'
 import 'splitting/dist/splitting-cells.css'

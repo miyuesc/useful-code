@@ -1,0 +1,55 @@
+.organization-tree-content {
+  display: flex;
+}
+
+
+.organization-tree-item {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    left: calc(var(--icon-size) / 2);
+    top: 0;
+    width: 1px;
+    height: 100%;
+    background-color: #eeeeee;
+  }
+}
+.org-tree-item_container {
+  display: flex;
+  //align-items: center;
+  position: relative;
+  .org-tree-item_ctr-icon {
+    position: absolute;
+    left: calc(0 - var(--icon-size));
+    z-index: 10;
+    & > .icon {
+      display: inline-block;
+      width: var(--icon-size);
+      height: var(--icon-size);
+      border-radius: 50%;
+      border: 1px solid #eeeeee;
+      background-color: #ffffff;
+      position: relative;
+      &.is-opened::before {
+        content: "";
+        position: absolute;
+      }
+    }
+  }
+  .org-tree-item_divider {
+    width: 40px;
+    height: calc(var(--icon-size) / 2);
+    border-bottom: 1px solid #eeeeee;
+  }
+}
+.org-tree-item_content {
+  height: 60px;
+}
+.org-tree-item_children {
+  padding-left: var(--gap);
+}

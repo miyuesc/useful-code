@@ -1,5 +1,5 @@
 import { defineComponent, PropType, ref, VNodeChild, VNodeRef } from 'vue'
-import { onClickOutside } from '@vueuse/core'
+import { MaybeElementRef, onClickOutside } from '@vueuse/core'
 import { NIcon } from 'naive-ui'
 import { MdCheckboxOutline } from '@vicons/ionicons4'
 
@@ -33,8 +33,8 @@ export default defineComponent({
       }
     }
 
-    const targetEl = ref<HTMLDivElement | undefined>(undefined)
-    onClickOutside(targetEl, (event) => {
+    const targetEl = ref<HTMLElement | undefined>(undefined)
+    onClickOutside(targetEl as MaybeElementRef, (event) => {
       isActive.value = false
     })
     const menuItemClick = (menu: unknown) => {

@@ -1,0 +1,94 @@
+.flow-design__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  --task-header-bg-corlor: #434ce8;
+  --task-header-text-color: #ffffff;
+  --node-border-corlor: #ececec;
+  --node-warning-color: #ff4d4f;
+
+  --main-radius: 4px;
+}
+
+.flow-node__wrapper {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  .flow-node__header {
+    line-height: 28px;
+    padding: 0 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: var(--main-radius) var(--main-radius) 0 0 ;
+  }
+  .flow-node__icon {
+    text-align: center;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+  }
+  .flow-node__name {
+    flex: 1;
+  }
+}
+.flow-node__content {
+  width: 240px;
+  border-radius: var(--main-radius);
+  border: 1px solid var(--node-border-corlor);
+  position: relative;
+  &:hover {
+    .flow-node__remove {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+}
+.flow-node__remove {
+  display: flex;
+  visibility: hidden;
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(calc(50% - 2px), calc(-50% + 2px));
+  border-radius: 50%;
+  background-color: var(--node-warning-color);
+  color: #ffffff;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  opacity: 0;
+  transition: opacity ease 0.2s;
+}
+.flow-node__behavior {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  height: 80px;
+  &::before {
+    content: '';
+    height: 100%;
+    width: 0;
+    border-left: 1px dashed var(--node-border-corlor);
+    border-right: 1px dashed var(--node-border-corlor);
+    margin: 0 auto;
+  }
+  .flow-node__behavior-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+  }
+}
+
+.task-node__content {
+  height: 100px;
+  .flow-node__header {
+    background-color: var(--task-header-bg-corlor);
+    color: var(--task-header-text-color);
+  }
+}
