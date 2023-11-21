@@ -1,6 +1,5 @@
 <script setup lang="ts">
   import type {
-    BaseNode,
     CCNode,
     CanRemove,
     CanAdd,
@@ -9,7 +8,7 @@
   } from '@/components/FlowDesign/types'
   import { computed, type PropType, ref } from 'vue'
   import { NInput } from 'naive-ui'
-  import { Send } from 'lucide-vue-next'
+  import { Send, XCircle } from 'lucide-vue-next'
   import { addNode, idGenerator, nodeGenerator, removeNode } from '@/components/FlowDesign/utils'
   import NodeBehavior from '@/components/FlowDesign/ChildNodes/NodeBehavior.vue'
 
@@ -88,7 +87,7 @@
       </div>
 
       <div v-if="nodeCanRemove" class="flow-node__remove">
-        <lucide-icon name="XCircle" :size="24" @click="removeCurrentNode" />
+        <x-circle :size="24" @click="removeCurrentNode" />
       </div>
 
       <div class="flow-node__body">
