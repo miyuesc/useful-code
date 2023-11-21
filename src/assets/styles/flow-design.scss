@@ -1,7 +1,15 @@
+.flow-design__wrapper {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  box-sizing: border-box;
+}
 .flow-design__container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: max-content;
+  min-width: 100%;
 
   --main-content-bg-corlor: #ffffff;
   --task-header-bg-corlor: #434ce8;

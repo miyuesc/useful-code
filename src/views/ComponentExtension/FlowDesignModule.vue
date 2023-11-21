@@ -9,7 +9,13 @@
 </script>
 
 <template>
-  <flow-design v-model:flow-data="flowData" />
+  <div class="flow-design-container">
+    <flow-design v-model:flow-data="flowData" />
+  </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+  .flow-design-container {
+    overflow: hidden;
+  }
+</style>

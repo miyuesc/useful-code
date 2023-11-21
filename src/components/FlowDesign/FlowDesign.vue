@@ -59,16 +59,18 @@
 </script>
 
 <template>
-  <div class="flow-design__container">
-    <template v-for="(node, i) in nodeList" :key="node.id">
-      <component
-        :is="nodeTypeMaps[node.type]"
-        v-model:node="nodeList[i]"
-        :can-remove="canRemove"
-        :can-add="canAdd"
-        :can-move="canMove"
-      />
-    </template>
-    <div class="flow-end">结束</div>
+  <div class="flow-design__wrapper">
+    <div class="flow-design__container">
+      <template v-for="(node, i) in nodeList" :key="node.id">
+        <component
+          :is="nodeTypeMaps[node.type]"
+          v-model:node="nodeList[i]"
+          :can-remove="canRemove"
+          :can-add="canAdd"
+          :can-move="canMove"
+        />
+      </template>
+      <div class="flow-end">结束</div>
+    </div>
   </div>
 </template>
