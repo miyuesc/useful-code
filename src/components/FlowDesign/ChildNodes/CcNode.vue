@@ -9,9 +9,9 @@
   } from '@/components/FlowDesign/types'
   import { computed, type PropType, ref } from 'vue'
   import { NInput } from 'naive-ui'
+  import { Send } from 'lucide-vue-next'
   import { addNode, idGenerator, nodeGenerator, removeNode } from '@/components/FlowDesign/utils'
   import NodeBehavior from '@/components/FlowDesign/ChildNodes/NodeBehavior.vue'
-  import LucideIcon from '@/components/LucideIcon/LucideIcon.vue'
 
   const emits = defineEmits(['update:node'])
   const props = defineProps({
@@ -59,7 +59,6 @@
     }
 
     if (canAdd(computedCcNode.value)) {
-      // @ts-ignore
       const newNode = nodeGenerator(type)
       addNode(computedCcNode.value, newNode)
     }
@@ -74,7 +73,7 @@
     <div class="flow-node__content cc-node__content">
       <div class="flow-node__header">
         <div class="flow-node__icon">
-          <lucide-icon name="Send" :size="20" />
+          <send :size="20" />
         </div>
         <div class="flow-node__name" @click.stop="onNameEditing = true">
           <n-input

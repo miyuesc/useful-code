@@ -4,6 +4,7 @@ import {
   CCNode,
   ConditionNode,
   ExpressionNode,
+  NodeTypes,
   TaskNode
 } from '@/components/FlowDesign/types'
 
@@ -18,7 +19,8 @@ export function nodeGenerator(type: 'condition', bo?: Record<string, unknown>): 
 export function nodeGenerator(type: 'expression', bo?: Record<string, unknown>): ExpressionNode
 export function nodeGenerator(type: 'task', bo?: Record<string, unknown>): TaskNode
 export function nodeGenerator(type: 'cc', bo?: Record<string, unknown>): CCNode
-export function nodeGenerator(type: BaseNodeType, bo?: Record<string, unknown>) {
+export function nodeGenerator(type: BaseNodeType, bo?: Record<string, unknown>): NodeTypes
+export function nodeGenerator(type: BaseNodeType, bo?: Record<string, unknown>): NodeTypes {
   switch (type) {
     case 'condition':
       const conditionNode: ConditionNode = {
@@ -39,7 +41,6 @@ export function nodeGenerator(type: BaseNodeType, bo?: Record<string, unknown>) 
     case 'expression':
       return {
         expression: '',
-        idx: idGenerator(),
         id: `${type}-${idGenerator()}`,
         type: 'expression',
         name: '条件分支',
@@ -111,4 +112,23 @@ export const moveNode = (curNode: BaseNode, nextNode: BaseNode): BaseNode => {
   }
   nextNode.next = curNode
   return curNode
+}
+
+export const insertNodes = (targetNode: BaseNode, nodes: BaseNode): BaseNode => {
+  const nextNode: BaseNode | null = targetNode.next
+
+  let lastNode: BaseNode = nodes
+
+  while (lastNode && lastNode.next) {
+    lastNode = lastNode.next
+  }
+
+  targetNode.next = nodes
+  nodes.prev = targetNode
+
+  if (nextNode) {
+    nextNode.prev = lastNode
+    lastNode.next = nextNode
+  }
+  return nodes
 }

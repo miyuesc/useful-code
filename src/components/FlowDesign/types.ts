@@ -15,7 +15,6 @@ export type TaskNode = BaseNode
 export type CCNode = BaseNode
 // 条件节点
 export type ExpressionNode = BaseNode & {
-  idx: number
   expression: string
   parent?: ConditionNode
 }
@@ -23,14 +22,10 @@ export type ExpressionNode = BaseNode & {
 export type ConditionNode = BaseNode & {
   expressions: ExpressionNode[]
 }
-export type NodeTypes = {
-  task: TaskNode
-  cc: CCNode
-  condition: ConditionNode
-  expression: ExpressionNode
-}
+export type NodeTypes = TaskNode | CCNode | ConditionNode | ExpressionNode
 
-export type BaseNodeType = keyof NodeTypes
+// export type BaseNodeType = keyof NodeTypes
+export type BaseNodeType = 'task' | 'cc' | 'condition' | 'expression'
 
 export type BranchNodeList = {
   expression: ExpressionNode

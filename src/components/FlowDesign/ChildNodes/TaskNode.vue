@@ -1,6 +1,5 @@
 <script setup lang="ts">
   import type {
-    BaseNode,
     TaskNode,
     CanRemove,
     CanAdd,
@@ -9,9 +8,9 @@
   } from '@/components/FlowDesign/types'
   import { computed, type PropType, ref } from 'vue'
   import { NInput } from 'naive-ui'
+  import { ClipboardCheck } from 'lucide-vue-next'
   import { addNode, idGenerator, nodeGenerator, removeNode } from '@/components/FlowDesign/utils'
   import NodeBehavior from '@/components/FlowDesign/ChildNodes/NodeBehavior.vue'
-  import LucideIcon from '@/components/LucideIcon/LucideIcon.vue'
 
   const emits = defineEmits(['update:node'])
   const props = defineProps({
@@ -59,7 +58,6 @@
     }
 
     if (canAdd(computedTaskNode.value)) {
-      // @ts-ignore
       const newNode = nodeGenerator(type)
       addNode(computedTaskNode.value, newNode)
     }
@@ -74,7 +72,7 @@
     <div class="flow-node__content task-node__content">
       <div class="flow-node__header">
         <div class="flow-node__icon">
-          <lucide-icon name="ClipboardCheck" :size="20" />
+          <clipboard-check :size="20" />
         </div>
         <div class="flow-node__name" @click.stop="onNameEditing = true">
           <n-input

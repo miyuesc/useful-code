@@ -13,8 +13,10 @@
   --expression-header-bg-corlor: #23ab0d;
   --expression-header-text-color: #ffffff;
   --expression-content-bg-corlor: #ffffff;
+  --end-content-bg-corlor: #c21c1c;
+  --end-header-text-color: #ffffff;
   --node-border-corlor: #e3e3e3;
-  --node-warning-color: #ff4d4f;
+  --node-warning-color: #e13704;
 
   --main-radius: 4px;
 
@@ -214,4 +216,16 @@
     background-color: var(--expression-header-bg-corlor);
     color: var(--expression-header-text-color);
   }
+}
+
+
+.flow-end {
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  color: var(--end-header-text-color);
+  border: 1px solid var(--end-content-bg-corlor);
+  background-color: color-mix(in srgb, var(--end-content-bg-corlor) 50%, transparent);
+  text-align: center;
+  line-height: 46px;
 }

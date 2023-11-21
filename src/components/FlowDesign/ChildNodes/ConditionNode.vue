@@ -76,6 +76,7 @@
 
   const addExpression = () => {
     const newExpression = nodeGenerator('expression')
+    newExpression.parent = computedConditionNode.value
     computedConditionNode.value.expressions.push(newExpression)
   }
 
@@ -86,7 +87,6 @@
     }
 
     if (canAdd(computedConditionNode.value)) {
-      // @ts-ignore
       const newNode = nodeGenerator(type)
       addNode(computedConditionNode.value, newNode)
     }

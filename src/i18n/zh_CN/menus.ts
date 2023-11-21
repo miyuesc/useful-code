@@ -5,6 +5,8 @@ export default {
   DetailsCardModule: '栅格详情卡片',
   CircleMenuButtonModule: '圆环菜单',
   HighlightTextModule: '高亮文本',
+  FlowDesignModule: '钉钉流程',
+  OrganizationTreeModule: '组织树',
   //
   CssAnimation: 'CSS 动画效果',
   SimpleSpinLoading: 'CSS 简易加载动画',

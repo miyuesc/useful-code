@@ -5,6 +5,7 @@
   import TaskNode from '@/components/FlowDesign/ChildNodes/TaskNode.vue'
   import CcNode from '@/components/FlowDesign/ChildNodes/CcNode.vue'
   import ConditionNode from '@/components/FlowDesign/ChildNodes/ConditionNode.vue'
+  import ExpressionNode from '@/components/FlowDesign/ChildNodes/ExpressionNode.vue'
 
   const emits = defineEmits(['update:flow-data'])
 
@@ -38,7 +39,8 @@
   const nodeTypeMaps = {
     task: TaskNode,
     cc: CcNode,
-    condition: ConditionNode
+    condition: ConditionNode,
+    expression: ExpressionNode
   }
 
   const startNode = props.flowData ? toRef(props, 'flowData') : ref(defaultFlowData())

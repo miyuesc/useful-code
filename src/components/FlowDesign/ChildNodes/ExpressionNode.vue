@@ -8,9 +8,9 @@
   } from '@/components/FlowDesign/types'
   import { computed, type PropType, ref } from 'vue'
   import { NInput } from 'naive-ui'
+  import { GitMerge } from 'lucide-vue-next'
   import { addNode, nodeGenerator, removeNode } from '@/components/FlowDesign/utils'
   import NodeBehavior from '@/components/FlowDesign/ChildNodes/NodeBehavior.vue'
-  import LucideIcon from '@/components/LucideIcon/LucideIcon.vue'
 
   const emits = defineEmits(['update:node'])
   const props = defineProps({
@@ -76,7 +76,7 @@
     <div class="flow-node__content expression-node__content">
       <div class="flow-node__header">
         <div class="flow-node__icon">
-          <lucide-icon name="GitMerge" :size="20" />
+          <git-merge :size="20" />
         </div>
         <div class="flow-node__name" @click.stop="onNameEditing = true">
           <n-input
