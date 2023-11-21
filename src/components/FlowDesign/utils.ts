@@ -6,7 +6,6 @@ import {
   ExpressionNode,
   TaskNode
 } from '@/components/FlowDesign/types'
-import { toRaw } from 'vue'
 
 let id = 0
 
@@ -22,26 +21,25 @@ export function nodeGenerator(type: 'cc', bo?: Record<string, unknown>): CCNode
 export function nodeGenerator(type: BaseNodeType, bo?: Record<string, unknown>) {
   switch (type) {
     case 'condition':
-      const expressionNode1: ExpressionNode = nodeGenerator('expression')
-      const expressionNode2: ExpressionNode = nodeGenerator('expression')
-      expressionNode1.idx = 1
-      expressionNode2.idx = 2
-      return {
+      const conditionNode: ConditionNode = {
         id: 'condition-' + idGenerator(),
         type: 'condition',
         name: '条件',
         prev: null,
         next: null,
         businessData: bo || {},
-        expressions: {
-          '1': expressionNode1,
-          '2': expressionNode2
-        }
-      } as ConditionNode
+        expressions: []
+      }
+      const expressionNode1: ExpressionNode = nodeGenerator('expression')
+      const expressionNode2: ExpressionNode = nodeGenerator('expression')
+      expressionNode1.parent = conditionNode
+      expressionNode2.parent = conditionNode
+      conditionNode.expressions = [expressionNode1, expressionNode2]
+      return conditionNode
     case 'expression':
       return {
         expression: '',
-        idx: 0,
+        idx: idGenerator(),
         id: `${type}-${idGenerator()}`,
         type: 'expression',
         name: '条件分支',
@@ -73,14 +71,16 @@ export function nodeGenerator(type: BaseNodeType, bo?: Record<string, unknown>) 
 }
 
 export const addNode = (curNode: BaseNode, newNode: BaseNode): BaseNode => {
-  const nextNode = newNode
-  const next = curNode.next
-  nextNode.prev = curNode
-  if (next) {
-    nextNode.next = next
+  const nextNode = curNode.next
+  curNode.next = newNode
+  newNode.prev = curNode
+
+  if (nextNode) {
+    nextNode.prev = newNode
+    newNode.next = nextNode
   }
-  curNode.next = nextNode
-  return nextNode
+
+  return newNode
 }
 
 export const removeNode = (curNode: BaseNode): BaseNode => {

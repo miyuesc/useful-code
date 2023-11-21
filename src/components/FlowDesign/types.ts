@@ -17,10 +17,11 @@ export type CCNode = BaseNode
 export type ExpressionNode = BaseNode & {
   idx: number
   expression: string
+  parent?: ConditionNode
 }
 // 整个条件体节点
 export type ConditionNode = BaseNode & {
-  expressions: Record<string, ExpressionNode>
+  expressions: ExpressionNode[]
 }
 export type NodeTypes = {
   task: TaskNode
@@ -30,6 +31,11 @@ export type NodeTypes = {
 }
 
 export type BaseNodeType = keyof NodeTypes
+
+export type BranchNodeList = {
+  expression: ExpressionNode
+  nextNodeList: BaseNode[]
+}
 
 // rules
 

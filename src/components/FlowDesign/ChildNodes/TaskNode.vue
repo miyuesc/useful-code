@@ -12,11 +12,11 @@
   import { addNode, idGenerator, nodeGenerator, removeNode } from '@/components/FlowDesign/utils'
   import NodeBehavior from '@/components/FlowDesign/ChildNodes/NodeBehavior.vue'
   import LucideIcon from '@/components/LucideIcon/LucideIcon.vue'
-  import CcNode from '@/components/FlowDesign/ChildNodes/CcNode.vue'
 
+  const emits = defineEmits(['update:node'])
   const props = defineProps({
     node: {
-      type: Object as PropType<BaseNode>,
+      type: Object as PropType<TaskNode>,
       default: () => null
     },
     canRemove: {
@@ -32,30 +32,25 @@
       default: () => true
     }
   })
-  const emit = defineEmits(['update:node'])
 
-  const defaultNodeData: TaskNode = {
+  const defaultNodeData: () => TaskNode = () => ({
     id: 'task-' + idGenerator(),
     type: 'task',
     next: null,
     prev: null,
     name: '审批',
     businessData: {}
-  }
+  })
 
-  const nodeBack = ref<TaskNode>({ ...defaultNodeData, ...(props.node || {}) })
+  const computedTaskNode = computed<TaskNode>({
+    get: () => props.node || defaultNodeData(),
+    set: (node: TaskNode) => emits('update:node', { ...node })
+  })
+  const nodeCanRemove = computed(() => {
+    return props.canRemove(computedTaskNode.value)
+  })
 
   const onNameEditing = ref<boolean>(false)
-
-  const nodeCanRemove = computed(() => {
-    if (!nodeBack.value.prev || nodeBack.value.type === 'expression') {
-      return false
-    }
-    if (!props.canRemove || typeof props.canRemove !== 'function') {
-      return true
-    }
-    return props.canRemove(nodeBack.value)
-  })
 
   const addANode = (type: BaseNodeType) => {
     let canAdd: CanAdd = () => true
@@ -63,18 +58,14 @@
       canAdd = props.canAdd
     }
 
-    if (canAdd(nodeBack.value)) {
-      const curNode: TaskNode = { ...nodeBack.value }
+    if (canAdd(computedTaskNode.value)) {
       // @ts-ignore
       const newNode = nodeGenerator(type)
-      addNode(curNode, newNode)
-      emit('update:node', { ...curNode })
+      addNode(computedTaskNode.value, newNode)
     }
   }
   const removeCurrentNode = () => {
-    const curNode: TaskNode = { ...nodeBack.value }
-    removeNode(curNode)
-    emit('update:node', { ...curNode })
+    removeNode(computedTaskNode.value)
   }
 </script>
 
@@ -88,12 +79,12 @@
         <div class="flow-node__name" @click.stop="onNameEditing = true">
           <n-input
             v-show="onNameEditing"
-            v-model:value="nodeBack.name"
+            v-model:value="computedTaskNode.name"
             size="tiny"
             @blur="onNameEditing = false"
             @keyup.enter="onNameEditing = false"
           />
-          <span v-show="!onNameEditing">{{ nodeBack.name }}</span>
+          <span v-show="!onNameEditing">{{ computedTaskNode.name }}</span>
         </div>
       </div>
 
@@ -102,26 +93,11 @@
       </div>
 
       <div class="flow-node__body">
-        {{ nodeBack.name }} + {{ nodeBack.id }}
+        {{ computedTaskNode.name }} + {{ computedTaskNode.id }}
         <slot name="body"></slot>
       </div>
     </div>
 
     <node-behavior @click="addANode" />
-
-    <task-node
-      v-if="nodeBack.next?.type === 'task'"
-      v-model:node="nodeBack.next"
-      :can-remove="canRemove"
-      :can-add="canAdd"
-      :can-move="canMove"
-    />
-    <cc-node
-      v-if="nodeBack.next?.type === 'cc'"
-      v-model:node="nodeBack.next"
-      :can-remove="canRemove"
-      :can-add="canAdd"
-      :can-move="canMove"
-    />
   </div>
 </template>
