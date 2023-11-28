@@ -1,39 +1,20 @@
 <script setup lang="ts">
-  import type {
-    ExpressionNode,
-    CanRemove,
-    CanAdd,
-    CanMove,
-    BaseNodeType
-  } from '@/components/FlowDesign/types'
+  import type { ExpressionNode, CanAdd, BaseNodeType } from '@/components/FlowDesign/types'
   import { computed, type PropType, ref } from 'vue'
   import { NInput } from 'naive-ui'
   import { GitMerge, XCircle } from 'lucide-vue-next'
-  import { addNode, nodeGenerator, removeNode } from '@/components/FlowDesign/utils'
+  import { addNode, moveNode, nodeGenerator, removeNode } from '@/components/FlowDesign/utils'
   import NodeBehavior from '@/components/FlowDesign/ChildNodes/NodeBehavior.vue'
+  import { BaseNode } from '@/components/FlowDesign/types'
+  import PropsGenerator from '@/components/FlowDesign/commonProps'
 
-  const emits = defineEmits(['update:node'])
+  const emits = defineEmits(['update:node', 'click'])
   const props = defineProps({
-    node: {
-      type: Object as PropType<ExpressionNode>,
-      default: () => null
-    },
     idx: {
       type: Number as PropType<number>,
       default: 0
     },
-    canRemove: {
-      type: Function as PropType<CanRemove>,
-      default: () => true
-    },
-    canAdd: {
-      type: Function as PropType<CanAdd>,
-      default: () => true
-    },
-    canMove: {
-      type: Function as PropType<CanMove>,
-      default: () => true
-    }
+    ...PropsGenerator<ExpressionNode>()
   })
 
   const defaultNodeData: () => ExpressionNode = () => nodeGenerator('expression')
@@ -42,19 +23,23 @@
     set: (node: ExpressionNode) => emits('update:node', { ...node })
   })
   const nodeCanRemove = computed(() => {
-    return props.canRemove(computedExpressionNode.value)
+    if (typeof props.canRemove === 'function') {
+      return props.canRemove(computedExpressionNode.value)
+    }
+    return props.canRemove
   })
 
   const onNameEditing = ref<boolean>(false)
 
   const addANode = (type: BaseNodeType) => {
-    let canAdd: CanAdd = () => true
-    if (props.canAdd && typeof props.canAdd === 'function') {
+    let canAdd: CanAdd
+    if (typeof props.canAdd === 'function') {
       canAdd = props.canAdd
+    } else {
+      canAdd = () => props.canAdd as boolean
     }
 
     if (canAdd(computedExpressionNode.value)) {
-      // @ts-ignore
       const newNode = nodeGenerator(type)
       addNode(computedExpressionNode.value, newNode)
     }
@@ -68,12 +53,20 @@
       removeNode(parent)
     }
   }
+
+  const setDropNode = (node: BaseNode) => {
+    moveNode(computedExpressionNode.value, node)
+  }
+
+  const emitClick = () => {
+    emits('click', computedExpressionNode.value)
+  }
 </script>
 
 <template>
   <div class="flow-node__wrapper expression-node__wrapper">
     <div class="flow-node__behavior small-behavior"></div>
-    <div class="flow-node__content expression-node__content">
+    <div class="flow-node__content expression-node__content" @click.stop="emitClick">
       <div class="flow-node__header">
         <div class="flow-node__icon">
           <git-merge :size="20" />
@@ -100,6 +93,6 @@
       </div>
     </div>
 
-    <node-behavior @click="addANode" />
+    <node-behavior @click="addANode" @drop="setDropNode" />
   </div>
 </template>

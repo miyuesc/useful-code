@@ -3,13 +3,6 @@
   height: 100%;
   overflow: auto;
   box-sizing: border-box;
-}
-.flow-design__container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: max-content;
-  min-width: 100%;
 
   --main-content-bg-corlor: #ffffff;
   --task-header-bg-corlor: #434ce8;
@@ -27,9 +20,20 @@
   --node-warning-color: #e13704;
 
   --main-radius: 4px;
+  --main-padding: 12px;
+  --main-transition-time: 0.2s;
 
   --node-width: 240px;
   --arrow-width: 6px;
+}
+.flow-design__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: max-content;
+  min-width: 100%;
+  box-sizing: border-box;
+  padding: var(--main-padding);
 }
 
 .flow-node__wrapper {
@@ -40,7 +44,7 @@
   justify-content: center;
   .flow-node__header {
     line-height: 28px;
-    padding: 0 12px;
+    padding: 0 var(--main-padding);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -63,6 +67,7 @@
   position: relative;
   background-color: var(--main-content-bg-corlor);
   z-index: 10;
+  transition: all ease var(--main-transition-time);
   &:hover {
     > .flow-node__remove {
       visibility: visible;
@@ -206,6 +211,9 @@
     background-color: var(--task-header-bg-corlor);
     color: var(--task-header-text-color);
   }
+  &:hover {
+    box-shadow: 0 0 6px 0 var(--task-header-bg-corlor);
+  }
 }
 
 .cc-node__content {
@@ -215,6 +223,9 @@
     background-color: var(--cc-header-bg-corlor);
     color: var(--cc-header-text-color);
   }
+  &:hover {
+    box-shadow: 0 0 6px 0 var(--cc-header-bg-corlor);
+  }
 }
 
 .expression-node__content {
@@ -223,6 +234,9 @@
   .flow-node__header {
     background-color: var(--expression-header-bg-corlor);
     color: var(--expression-header-text-color);
+  }
+  &:hover {
+    box-shadow: 0 0 6px 0 var(--expression-header-bg-corlor);
   }
 }
 
@@ -236,4 +250,8 @@
   background-color: color-mix(in srgb, var(--end-content-bg-corlor) 50%, transparent);
   text-align: center;
   line-height: 46px;
+  transition: all ease var(--main-transition-time);
+  &:hover {
+    box-shadow: 0 0 6px 0 var(--end-content-bg-corlor);
+  }
 }

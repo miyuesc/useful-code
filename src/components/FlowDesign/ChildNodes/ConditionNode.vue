@@ -1,41 +1,23 @@
 <script setup lang="ts">
-  import NodeBehavior from '@/components/FlowDesign/ChildNodes/NodeBehavior.vue'
+  import { computed } from 'vue'
+  import { NButton } from 'naive-ui'
   import {
     BaseNode,
     BaseNodeType,
     CanAdd,
-    CanMove,
-    CanRemove,
     ConditionNode as ConditionNodeType,
     BranchNodeList
   } from '@/components/FlowDesign/types'
-  import { addNode, nodeGenerator, removeNode } from '@/components/FlowDesign/utils'
-  import { computed, type PropType } from 'vue'
-  import { NButton } from 'naive-ui'
+  import { addNode, nodeGenerator } from '@/components/FlowDesign/utils'
+  import PropsGenerator from '@/components/FlowDesign/commonProps'
+  import NodeBehavior from '@/components/FlowDesign/ChildNodes/NodeBehavior.vue'
   import TaskNode from '@/components/FlowDesign/ChildNodes/TaskNode.vue'
   import CcNode from '@/components/FlowDesign/ChildNodes/CcNode.vue'
   import ExpressionNode from '@/components/FlowDesign/ChildNodes/ExpressionNode.vue'
   import ConditionNode from '@/components/FlowDesign/ChildNodes/ConditionNode.vue'
 
-  const emits = defineEmits(['update:node'])
-  const props = defineProps({
-    node: {
-      type: Object as PropType<ConditionNodeType>,
-      default: () => null
-    },
-    canRemove: {
-      type: Function as PropType<CanRemove>,
-      default: () => true
-    },
-    canAdd: {
-      type: Function as PropType<CanAdd>,
-      default: () => true
-    },
-    canMove: {
-      type: Function as PropType<CanMove>,
-      default: () => true
-    }
-  })
+  const emits = defineEmits(['update:node', 'click'])
+  const props = defineProps(PropsGenerator<ConditionNodeType>())
 
   const defaultNodeData: () => ConditionNodeType = () => nodeGenerator('condition')
   const nodeTypeMaps = {
@@ -81,18 +63,17 @@
   }
 
   const addANode = (type: BaseNodeType) => {
-    let canAdd: CanAdd = () => true
-    if (props.canAdd && typeof props.canAdd === 'function') {
+    let canAdd: CanAdd
+    if (typeof props.canAdd === 'function') {
       canAdd = props.canAdd
+    } else {
+      canAdd = () => props.canAdd as boolean
     }
 
     if (canAdd(computedConditionNode.value)) {
       const newNode = nodeGenerator(type)
       addNode(computedConditionNode.value, newNode)
     }
-  }
-  const removeCurrentNode = () => {
-    removeNode(computedConditionNode.value)
   }
 </script>
 
@@ -112,17 +93,19 @@
           <expression-node
             v-model:node="branchesNodeList[bi].expression"
             :idx="bi"
-            :can-remove="canRemove"
-            :can-add="canAdd"
-            :can-move="canMove"
+            :can-remove="props.canRemove"
+            :can-add="props.canAdd"
+            :can-move="props.canMove"
+            @click="emits('click', $event)"
           />
           <template v-for="(nextNode, i) in branch.nextNodeList" :key="nextNode.id">
             <component
               :is="nodeTypeMaps[nextNode.type]"
               v-model:node="branch.nextNodeList[i]"
-              :can-remove="canRemove"
-              :can-add="canAdd"
-              :can-move="canMove"
+              :can-remove="props.canRemove"
+              :can-add="props.canAdd"
+              :can-move="props.canMove"
+              @click="emits('click', $event)"
             />
           </template>
         </div>

@@ -1,36 +1,21 @@
 <script setup lang="ts">
-  import type {
-    TaskNode,
-    CanRemove,
-    CanAdd,
-    CanMove,
-    BaseNodeType
-  } from '@/components/FlowDesign/types'
-  import { computed, type PropType, ref } from 'vue'
+  import type { TaskNode, CanAdd, BaseNodeType, BaseNode } from '@/components/FlowDesign/types'
+  import { computed, ref } from 'vue'
   import { NInput } from 'naive-ui'
   import { ClipboardCheck, XCircle } from 'lucide-vue-next'
-  import { addNode, idGenerator, nodeGenerator, removeNode } from '@/components/FlowDesign/utils'
+  import {
+    addNode,
+    idGenerator,
+    moveNode,
+    nodeGenerator,
+    removeNode,
+    setDragData
+  } from '@/components/FlowDesign/utils'
   import NodeBehavior from '@/components/FlowDesign/ChildNodes/NodeBehavior.vue'
+  import PropsGenerator from '@/components/FlowDesign/commonProps'
 
-  const emits = defineEmits(['update:node'])
-  const props = defineProps({
-    node: {
-      type: Object as PropType<TaskNode>,
-      default: () => null
-    },
-    canRemove: {
-      type: Function as PropType<CanRemove>,
-      default: () => true
-    },
-    canAdd: {
-      type: Function as PropType<CanAdd>,
-      default: () => true
-    },
-    canMove: {
-      type: Function as PropType<CanMove>,
-      default: () => true
-    }
-  })
+  const emits = defineEmits(['update:node', 'click'])
+  const props = defineProps(PropsGenerator<TaskNode>())
 
   const defaultNodeData: () => TaskNode = () => ({
     id: 'task-' + idGenerator(),
@@ -46,15 +31,26 @@
     set: (node: TaskNode) => emits('update:node', { ...node })
   })
   const nodeCanRemove = computed(() => {
-    return props.canRemove(computedTaskNode.value)
+    if (typeof props.canRemove === 'function') {
+      return props.canRemove(computedTaskNode.value)
+    }
+    return props.canRemove
+  })
+  const nodeCanMove = computed(() => {
+    if (typeof props.canMove === 'function') {
+      return props.canMove(computedTaskNode.value)
+    }
+    return props.canMove
   })
 
   const onNameEditing = ref<boolean>(false)
 
   const addANode = (type: BaseNodeType) => {
-    let canAdd: CanAdd = () => true
-    if (props.canAdd && typeof props.canAdd === 'function') {
+    let canAdd: CanAdd
+    if (typeof props.canAdd === 'function') {
       canAdd = props.canAdd
+    } else {
+      canAdd = () => props.canAdd as boolean
     }
 
     if (canAdd(computedTaskNode.value)) {
@@ -65,11 +61,27 @@
   const removeCurrentNode = () => {
     removeNode(computedTaskNode.value)
   }
+
+  const initDrag = (event: DragEvent) => {
+    setDragData(event, computedTaskNode.value)
+  }
+  const setDropNode = (node: BaseNode) => {
+    moveNode(computedTaskNode.value, node)
+  }
+
+  const emitClick = () => {
+    emits('click', computedTaskNode.value)
+  }
 </script>
 
 <template>
   <div class="flow-node__wrapper task-node__wrapper">
-    <div class="flow-node__content task-node__content">
+    <div
+      class="flow-node__content task-node__content"
+      :draggable="nodeCanMove"
+      @dragstart.stop="initDrag"
+      @click.stop="emitClick"
+    >
       <div class="flow-node__header">
         <div class="flow-node__icon">
           <clipboard-check :size="20" />
@@ -96,6 +108,6 @@
       </div>
     </div>
 
-    <node-behavior @click="addANode" />
+    <node-behavior @click="addANode" @drop="setDropNode" />
   </div>
 </template>

@@ -71,6 +71,21 @@ export function nodeGenerator(type: BaseNodeType, bo?: Record<string, unknown>):
   }
 }
 
+// 已有节点处理
+export const nodeMaps: Record<BaseNode['id'], BaseNode> = {}
+export const setNodeInMap = (node: BaseNode) => {
+  nodeMaps[node.id] = node
+}
+export const getNodeInMap = (id: BaseNode['id']) => {
+  return nodeMaps[id]
+}
+export const removeNodeInMap = (id: BaseNode['id']) => {
+  const node = nodeMaps[id]
+  delete nodeMaps[id]
+  return node
+}
+
+// 节点增删改
 export const addNode = (curNode: BaseNode, newNode: BaseNode): BaseNode => {
   const nextNode = curNode.next
   curNode.next = newNode
@@ -81,9 +96,10 @@ export const addNode = (curNode: BaseNode, newNode: BaseNode): BaseNode => {
     newNode.next = nextNode
   }
 
+  setNodeInMap(newNode)
+
   return newNode
 }
-
 export const removeNode = (curNode: BaseNode): BaseNode => {
   const prev = curNode.prev
   const next = curNode.next
@@ -93,42 +109,29 @@ export const removeNode = (curNode: BaseNode): BaseNode => {
   if (next) {
     next.prev = prev
   }
+
+  curNode.prev = null
+  curNode.next = null
+
+  removeNodeInMap(curNode.id)
+
   return curNode
 }
-
-export const moveNode = (curNode: BaseNode, nextNode: BaseNode): BaseNode => {
-  const prev = curNode.prev
-  const next = curNode.next
-  if (prev) {
-    prev.next = next
-  }
-  if (next) {
-    next.prev = prev
-  }
-  curNode.prev = nextNode
-  curNode.next = nextNode.next
-  if (nextNode.next) {
-    nextNode.next.prev = curNode
-  }
-  nextNode.next = curNode
-  return curNode
+export const moveNode = (targetNode: BaseNode, node: BaseNode): BaseNode => {
+  removeNode(node)
+  return addNode(targetNode, node)
 }
 
-export const insertNodes = (targetNode: BaseNode, nodes: BaseNode): BaseNode => {
-  const nextNode: BaseNode | null = targetNode.next
+// 节点拖动
+export const setDragData = (event: DragEvent, node: BaseNode) => {
+  event.dataTransfer?.setData('text', node.id)
+}
+export const getDragData = (event: DragEvent) => {
+  event.preventDefault()
+  const id = event.dataTransfer?.getData('text')
 
-  let lastNode: BaseNode = nodes
-
-  while (lastNode && lastNode.next) {
-    lastNode = lastNode.next
+  if (!id) {
+    return
   }
-
-  targetNode.next = nodes
-  nodes.prev = targetNode
-
-  if (nextNode) {
-    nextNode.prev = lastNode
-    lastNode.next = nextNode
-  }
-  return nodes
+  return getNodeInMap(id)
 }

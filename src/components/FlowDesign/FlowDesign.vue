@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import type { BaseNode, CanAdd, CanMove, CanRemove } from '@/components/FlowDesign/types'
+  import type { BaseNode, CanRemove } from '@/components/FlowDesign/types'
   import { type PropType, computed, toRef, watchEffect, ref } from 'vue'
   import { idGenerator } from '@/components/FlowDesign/utils'
   import TaskNode from '@/components/FlowDesign/ChildNodes/TaskNode.vue'
@@ -7,7 +7,7 @@
   import ConditionNode from '@/components/FlowDesign/ChildNodes/ConditionNode.vue'
   import ExpressionNode from '@/components/FlowDesign/ChildNodes/ExpressionNode.vue'
 
-  const emits = defineEmits(['update:flow-data'])
+  const emits = defineEmits(['update:flow-data', 'click'])
 
   const props = defineProps({
     flowData: {
@@ -15,16 +15,16 @@
       default: () => null
     },
     canRemove: {
-      type: Function as PropType<CanRemove>,
-      default: () => true
+      type: [Boolean, Function] as PropType<CanRemove>,
+      default: true
     },
     canAdd: {
-      type: Function as PropType<CanAdd>,
-      default: () => true
+      type: [Boolean, Function] as PropType<CanRemove>,
+      default: true
     },
     canMove: {
-      type: Function as PropType<CanMove>,
-      default: () => true
+      type: [Boolean, Function] as PropType<CanRemove>,
+      default: true
     }
   })
 
@@ -65,9 +65,10 @@
         <component
           :is="nodeTypeMaps[node.type]"
           v-model:node="nodeList[i]"
-          :can-remove="canRemove"
           :can-add="canAdd"
-          :can-move="canMove"
+          :can-remove="i > 0 && canRemove"
+          :can-move="i > 0 && canMove"
+          @click="emits('click', $event)"
         />
       </template>
       <div class="flow-end">结束</div>

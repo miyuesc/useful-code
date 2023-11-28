@@ -21,6 +21,7 @@ export type ExpressionNode = BaseNode & {
 // 整个条件体节点
 export type ConditionNode = BaseNode & {
   expressions: ExpressionNode[]
+  default?: ExpressionNode
 }
 export type NodeTypes = TaskNode | CCNode | ConditionNode | ExpressionNode
 
@@ -33,7 +34,8 @@ export type BranchNodeList = {
 }
 
 // rules
-
-export type CanRemove = (node?: BaseNode) => boolean
-export type CanAdd = (node?: BaseNode) => boolean
-export type CanMove = (node?: BaseNode) => boolean
+export type CanRuleValidator = (node?: BaseNode) => boolean
+export type CanRemove = boolean | CanRuleValidator
+export type CanAdd = boolean | CanRuleValidator
+export type CanMove = boolean | CanRuleValidator
+export type UserSyncValidator = (node: BaseNode) => Promise<boolean>

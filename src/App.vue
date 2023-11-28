@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { ref, watch } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
+  import { NConfigProvider, NDialogProvider, NMessageProvider } from 'naive-ui'
   import type { NavItem } from '@/components/types'
 
   import NavHeader from '@/components/NavHeader/NavHeader.vue'
@@ -55,33 +56,43 @@
 </script>
 
 <template>
-  <NavHeader :navs="menus" :active-nav="activeNav" @nav-click="pageToMainModule">
-    <template #logo>
-      <span class="logo-image"></span>
-      <span class="logo-text">Useful Codes</span>
-    </template>
-  </NavHeader>
-  <div class="useful-page-container">
-    <transition name="fade-left" mode="out-in">
-      <NavSlider
-        v-if="childMenus"
-        :child-navs="childMenus"
-        :active-nav="activeChildNav"
-        @slider-click="pageToSubModule"
-      />
-    </transition>
-    <div class="page-content">
-      <!--      <transition name="scale">-->
-      <!--        <router-view />-->
-      <!--      </transition>-->
+  <NConfigProvider
+    abstract
+    :component-options="{ DynamicInput: { buttonSize: 'small' } }"
+    :hljs="hljs"
+  >
+    <NDialogProvider>
+      <NMessageProvider>
+        <NavHeader :navs="menus" :active-nav="activeNav" @nav-click="pageToMainModule">
+          <template #logo>
+            <span class="logo-image"></span>
+            <span class="logo-text">Useful Codes</span>
+          </template>
+        </NavHeader>
+        <div class="useful-page-container">
+          <transition name="fade-left" mode="out-in">
+            <NavSlider
+              v-if="childMenus"
+              :child-navs="childMenus"
+              :active-nav="activeChildNav"
+              @slider-click="pageToSubModule"
+            />
+          </transition>
+          <div class="page-content">
+            <!--      <transition name="scale">-->
+            <!--        <router-view />-->
+            <!--      </transition>-->
 
-      <router-view v-slot="{ Component, route: currentRoute }">
-        <transition name="scale">
-          <component :is="Component" :key="currentRoute.path" class="content-body" />
-        </transition>
-      </router-view>
-    </div>
-  </div>
+            <router-view v-slot="{ Component, route: currentRoute }">
+              <transition name="scale">
+                <component :is="Component" :key="currentRoute.path" class="content-body" />
+              </transition>
+            </router-view>
+          </div>
+        </div>
+      </NMessageProvider>
+    </NDialogProvider>
+  </NConfigProvider>
 </template>
 
 <style lang="scss" scoped>

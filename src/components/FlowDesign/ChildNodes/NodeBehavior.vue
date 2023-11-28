@@ -1,17 +1,30 @@
 <script setup lang="ts">
   import { NButton, NPopover } from 'naive-ui'
   import { BaseNodeType } from '@/components/FlowDesign/types'
+  import { getDragData } from '@/components/FlowDesign/utils'
 
-  const emits = defineEmits(['click'])
+  const emits = defineEmits(['click', 'drop'])
 
   const emitClick = (type: BaseNodeType) => {
     emits('click', type)
+  }
+
+  const emitDropNode = (ev: DragEvent) => {
+    const node = getDragData(ev)
+    console.log('drop', node)
+    if (node) {
+      emits('drop', node)
+    }
+  }
+
+  const validateDrop = (ev: DragEvent) => {
+    ev.preventDefault()
   }
 </script>
 
 <template>
   <div class="flow-node__behavior">
-    <div class="flow-node__behavior-btn">
+    <div class="flow-node__behavior-btn" @drop.stop="emitDropNode" @dragover.stop="validateDrop">
       <n-popover trigger="click" placement="right">
         <template #trigger>
           <n-button circle type="info">＋</n-button>
