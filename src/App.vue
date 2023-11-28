@@ -56,11 +56,7 @@
 </script>
 
 <template>
-  <NConfigProvider
-    abstract
-    :component-options="{ DynamicInput: { buttonSize: 'small' } }"
-    :hljs="hljs"
-  >
+  <NConfigProvider abstract :component-options="{ DynamicInput: { buttonSize: 'small' } }">
     <NDialogProvider>
       <NMessageProvider>
         <NavHeader :navs="menus" :active-nav="activeNav" @nav-click="pageToMainModule">
