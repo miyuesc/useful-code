@@ -59,8 +59,11 @@
       addNode(computedCcNode, newNode)
     }
   }
-  const removeCurrentNode = () => {
-    removeNode(computedCcNode)
+  const removeCurrentNode = async () => {
+    const valid = await props.removeValidator(computedCcNode.value)
+    if (valid) {
+      removeNode(computedCcNode)
+    }
   }
 
   const initDrag = (event: DragEvent) => {
@@ -103,7 +106,7 @@
       </div>
 
       <div v-if="nodeCanRemove" class="flow-node__remove">
-        <x-circle :size="24" @click="removeCurrentNode" />
+        <x-circle :size="24" @click.stop="removeCurrentNode" />
       </div>
 
       <div class="flow-node__body">

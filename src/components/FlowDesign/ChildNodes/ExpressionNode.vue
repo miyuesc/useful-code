@@ -44,13 +44,16 @@
       addNode(computedExpressionNode, newNode)
     }
   }
-  const removeCurrentNode = () => {
+  const removeCurrentNode = async () => {
     const parent = computedExpressionNode.value.parent!
 
     if (parent.expressions.length > 1) {
       parent?.expressions.splice(props.idx, 1)
     } else {
-      removeNode(parent)
+      const valid = await props.removeValidator(computedExpressionNode.value)
+      if (valid) {
+        removeNode(computedExpressionNode)
+      }
     }
   }
 
@@ -87,7 +90,7 @@
       </div>
 
       <div v-if="nodeCanRemove" class="flow-node__remove">
-        <x-circle :size="24" @click="removeCurrentNode" />
+        <x-circle :size="24" @click.stop="removeCurrentNode" />
       </div>
 
       <div class="flow-node__body">

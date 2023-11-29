@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { ref, shallowRef, toRaw, watchEffect } from 'vue'
-  import { NModal } from 'naive-ui'
+  import { NModal, useDialog } from 'naive-ui'
   import FlowDesign from '@/components/FlowDesign/FlowDesign.vue'
   import { BaseNode } from '@/components/FlowDesign/types'
 
@@ -21,11 +21,34 @@
     const num = Number(strs[1])
     return num % 3 !== 0
   }
+
+  const dialog = useDialog()
+  const removeConfirm = (node: BaseNode): Promise<boolean> => {
+    return new Promise<boolean>((resolve, reject) => {
+      dialog.warning({
+        title: '警告',
+        content: '你确定？',
+        positiveText: '确定',
+        negativeText: '不确定',
+        onPositiveClick: () => {
+          resolve(true)
+        },
+        onNegativeClick: () => {
+          reject(false)
+        }
+      })
+    })
+  }
 </script>
 
 <template>
   <div class="flow-design-container">
-    <flow-design v-model:flow-data="flowData" :can-remove="removeValidator" @click="openModal" />
+    <flow-design
+      v-model:flow-data="flowData"
+      :can-remove="removeValidator"
+      :remove-validator="removeConfirm"
+      @click="openModal"
+    />
 
     <n-modal
       v-model:show="modalVisible"

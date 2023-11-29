@@ -6,6 +6,7 @@
   import CcNode from '@/components/FlowDesign/ChildNodes/CcNode.vue'
   import ConditionNode from '@/components/FlowDesign/ChildNodes/ConditionNode.vue'
   import ExpressionNode from '@/components/FlowDesign/ChildNodes/ExpressionNode.vue'
+  import { UserSyncValidator } from '@/components/FlowDesign/types'
 
   const emits = defineEmits(['update:flow-data', 'click'])
 
@@ -25,6 +26,11 @@
     canMove: {
       type: [Boolean, Function] as PropType<CanRemove>,
       default: true
+    },
+
+    removeValidator: {
+      type: Function as PropType<UserSyncValidator>,
+      default: () => async () => true
     }
   })
 
@@ -70,6 +76,7 @@
           :can-add="canAdd"
           :can-remove="i > 0 && canRemove"
           :can-move="i > 0 && canMove"
+          :remove-validator="removeValidator"
           @click="emits('click', $event)"
         />
       </template>
