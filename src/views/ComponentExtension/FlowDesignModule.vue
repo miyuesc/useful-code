@@ -15,11 +15,17 @@
   }
 
   watchEffect(() => console.log(toRaw(flowData).value))
+
+  const removeValidator = (node: BaseNode) => {
+    const strs = node.id.split('-') as string[]
+    const num = Number(strs[1])
+    return num % 3 !== 0
+  }
 </script>
 
 <template>
   <div class="flow-design-container">
-    <flow-design v-model:flow-data="flowData" @click="openModal" />
+    <flow-design v-model:flow-data="flowData" :can-remove="removeValidator" @click="openModal" />
 
     <n-modal
       v-model:show="modalVisible"
