@@ -1,0 +1,1 @@
+import{d as a,r as o,a as s,c as e,M as _,O as c,Z as r,_ as l}from"./index-2469bd58.js";const d=a({__name:"ScssSnowBg",setup(u){const n=o(200);return(p,m)=>(s(),e("div",{class:"scss-snow-bg",style:r({"--total":n.value})},[(s(!0),e(_,null,c(n.value,t=>(s(),e("div",{key:t,class:"snow"}))),128))],4))}});const i=l(d,[["__scopeId","data-v-5d4f5835"]]);export{i as default};
