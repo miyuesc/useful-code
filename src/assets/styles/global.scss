@@ -64,9 +64,10 @@ h3 {
 }
 .useful-page-container {
   display: flex;
+  flex-wrap: wrap;
   flex: 1;
   overflow: hidden;
-  padding: 0 var(--main-padding) var(--main-padding) var(--main-padding);
+  padding: 0 var(--main-padding) 0 var(--main-padding);
 }
 .page-content {
   flex: 1;
@@ -75,7 +76,6 @@ h3 {
   position: relative;
   background-color: var(--content-container-bg);
   border-radius: var(--main-radius);
-  padding: var(--main-padding);
 
   >div.content-body {
     position: absolute;

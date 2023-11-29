@@ -6,6 +6,7 @@
 
   import NavHeader from '@/components/NavHeader/NavHeader.vue'
   import NavSlider from '@/components/NavSlider/NavSlider.vue'
+  import NavFooter from '@/components/NavFooter/NavFooter.vue'
   import { formatMenusObjectToArray, MenuItem } from '@/router/menu-util'
 
   const menusObject: Record<string, MenuItem> = JSON.parse(
@@ -56,15 +57,16 @@
 </script>
 
 <template>
-  <NConfigProvider abstract :component-options="{ DynamicInput: { buttonSize: 'small' } }">
-    <NDialogProvider>
-      <NMessageProvider>
-        <NavHeader :navs="menus" :active-nav="activeNav" @nav-click="pageToMainModule">
+  <n-config-provider abstract :component-options="{ DynamicInput: { buttonSize: 'small' } }">
+    <n-dialog-provider>
+      <n-message-provider>
+        <nav-header :navs="menus" :active-nav="activeNav" @nav-click="pageToMainModule">
           <template #logo>
             <span class="logo-image"></span>
             <span class="logo-text">Useful Codes</span>
           </template>
-        </NavHeader>
+        </nav-header>
+
         <div class="useful-page-container">
           <transition name="fade-left" mode="out-in">
             <NavSlider
@@ -86,9 +88,11 @@
             </router-view>
           </div>
         </div>
-      </NMessageProvider>
-    </NDialogProvider>
-  </NConfigProvider>
+
+        <nav-footer />
+      </n-message-provider>
+    </n-dialog-provider>
+  </n-config-provider>
 </template>
 
 <style lang="scss" scoped>

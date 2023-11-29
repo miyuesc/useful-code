@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
   import { type PropType, computed } from 'vue'
-  import type { NavAlign, NavHeight, NavItem } from '@/components/types'
+  import type { NavAlign, NavItem } from '@/components/types'
 
   const props = defineProps({
     navs: {
@@ -39,7 +39,7 @@
       default: 'end'
     },
     height: {
-      type: [Number, String] as PropType<NavHeight>,
+      type: [Number, String] as PropType<string | number>,
       default: 64
     }
   })
