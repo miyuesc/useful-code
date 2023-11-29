@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { computed } from 'vue'
+  import { computed, ref } from 'vue'
   import { NButton } from 'naive-ui'
   import {
     BaseNode,
@@ -29,7 +29,7 @@
 
   const computedConditionNode = computed<ConditionNodeType>({
     get: () => props.node || defaultNodeData(),
-    set: (node: ConditionNodeType) => emits('update:node', { ...node })
+    set: (node: ConditionNodeType) => emits('update:node', node)
   })
 
   const nextNodeTraversal = (node: BaseNode | null): BaseNode[] => {
@@ -71,8 +71,8 @@
     }
 
     if (canAdd(computedConditionNode.value)) {
-      const newNode = nodeGenerator(type)
-      addNode(computedConditionNode.value, newNode)
+      const newNode = ref(nodeGenerator(type))
+      addNode(computedConditionNode, newNode)
     }
   }
 </script>

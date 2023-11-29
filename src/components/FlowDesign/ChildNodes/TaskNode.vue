@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import type { TaskNode, CanAdd, BaseNodeType, BaseNode } from '@/components/FlowDesign/types'
-  import { computed, ref } from 'vue'
+  import { computed, ComputedRef, Ref, ref } from 'vue'
   import { NInput } from 'naive-ui'
   import { ClipboardCheck, XCircle } from 'lucide-vue-next'
   import {
@@ -28,7 +28,7 @@
 
   const computedTaskNode = computed<TaskNode>({
     get: () => props.node || defaultNodeData(),
-    set: (node: TaskNode) => emits('update:node', { ...node })
+    set: (node: TaskNode) => emits('update:node', node)
   })
   const nodeCanRemove = computed(() => {
     if (typeof props.canRemove === 'function') {
@@ -54,19 +54,22 @@
     }
 
     if (canAdd(computedTaskNode.value)) {
-      const newNode = nodeGenerator(type)
-      addNode(computedTaskNode.value, newNode)
+      const newNode = ref(nodeGenerator(type))
+      addNode(computedTaskNode, newNode)
     }
   }
   const removeCurrentNode = () => {
-    removeNode(computedTaskNode.value)
+    removeNode(computedTaskNode)
   }
 
   const initDrag = (event: DragEvent) => {
-    setDragData(event, computedTaskNode.value)
+    setDragData(event, computedTaskNode)
   }
-  const setDropNode = (node: BaseNode) => {
-    moveNode(computedTaskNode.value, node)
+  const setDropNode = (node: ComputedRef<BaseNode> | Ref<BaseNode>) => {
+    if (node.value.id === computedTaskNode.value.id) {
+      return
+    }
+    moveNode(computedTaskNode, node)
   }
 
   const emitClick = () => {

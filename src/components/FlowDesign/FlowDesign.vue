@@ -55,7 +55,9 @@
     return list
   })
 
-  watchEffect(() => emits('update:flow-data', startNode.value))
+  watchEffect(() => {
+    emits('update:flow-data', startNode)
+  })
 </script>
 
 <template>

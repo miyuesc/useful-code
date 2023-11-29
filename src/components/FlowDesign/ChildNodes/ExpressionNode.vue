@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import type { ExpressionNode, CanAdd, BaseNodeType } from '@/components/FlowDesign/types'
-  import { computed, type PropType, ref } from 'vue'
+  import { computed, ComputedRef, type PropType, Ref, ref } from 'vue'
   import { NInput } from 'naive-ui'
   import { GitMerge, XCircle } from 'lucide-vue-next'
   import { addNode, moveNode, nodeGenerator, removeNode } from '@/components/FlowDesign/utils'
@@ -20,7 +20,7 @@
   const defaultNodeData: () => ExpressionNode = () => nodeGenerator('expression')
   const computedExpressionNode = computed<ExpressionNode>({
     get: () => props.node || defaultNodeData(),
-    set: (node: ExpressionNode) => emits('update:node', { ...node })
+    set: (node: ExpressionNode) => emits('update:node', node)
   })
   const nodeCanRemove = computed(() => {
     if (typeof props.canRemove === 'function') {
@@ -40,8 +40,8 @@
     }
 
     if (canAdd(computedExpressionNode.value)) {
-      const newNode = nodeGenerator(type)
-      addNode(computedExpressionNode.value, newNode)
+      const newNode = ref(nodeGenerator(type))
+      addNode(computedExpressionNode, newNode)
     }
   }
   const removeCurrentNode = () => {
@@ -54,8 +54,11 @@
     }
   }
 
-  const setDropNode = (node: BaseNode) => {
-    moveNode(computedExpressionNode.value, node)
+  const setDropNode = (node: ComputedRef<BaseNode> | Ref<BaseNode>) => {
+    if (node.value.id === computedExpressionNode.value.id) {
+      return
+    }
+    moveNode(computedExpressionNode, node)
   }
 
   const emitClick = () => {

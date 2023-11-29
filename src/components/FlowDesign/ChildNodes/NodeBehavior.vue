@@ -11,7 +11,6 @@
 
   const emitDropNode = (ev: DragEvent) => {
     const node = getDragData(ev)
-    console.log('drop', node)
     if (node) {
       emits('drop', node)
     }
