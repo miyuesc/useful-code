@@ -103,6 +103,7 @@
             :can-remove="props.canRemove"
             :can-add="props.canAdd"
             :can-move="props.canMove"
+            :remove-validator="props.removeValidator"
             @click="emits('click', $event)"
           />
           <template v-for="(nextNode, i) in branch.nextNodeList" :key="nextNode.id">
@@ -112,6 +113,7 @@
               :can-remove="props.canRemove"
               :can-add="props.canAdd"
               :can-move="props.canMove"
+              :remove-validator="props.removeValidator"
               @click="emits('click', $event)"
             />
           </template>
