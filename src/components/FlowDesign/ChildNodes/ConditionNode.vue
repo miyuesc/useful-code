@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { computed, ref } from 'vue'
+  import { computed, ComputedRef, Ref, ref } from 'vue'
   import { NButton } from 'naive-ui'
   import {
     BaseNode,
@@ -8,7 +8,7 @@
     ConditionNode as ConditionNodeType,
     BranchNodeList
   } from '@/components/FlowDesign/types'
-  import { addNode, nodeGenerator } from '@/components/FlowDesign/utils'
+  import { addNode, moveNode, nodeGenerator } from '@/components/FlowDesign/utils'
   import PropsGenerator from '@/components/FlowDesign/commonProps'
   import NodeBehavior from '@/components/FlowDesign/ChildNodes/NodeBehavior.vue'
   import TaskNode from '@/components/FlowDesign/ChildNodes/TaskNode.vue'
@@ -75,6 +75,13 @@
       addNode(computedConditionNode, newNode)
     }
   }
+
+  const setDropNode = (node: ComputedRef<BaseNode> | Ref<BaseNode>) => {
+    if (node.value.id === computedConditionNode.value.id) {
+      return
+    }
+    moveNode(computedConditionNode, node)
+  }
 </script>
 
 <template>
@@ -112,6 +119,6 @@
       </div>
     </div>
 
-    <node-behavior @click="addANode" />
+    <node-behavior @click="addANode" @drop="setDropNode" />
   </div>
 </template>
