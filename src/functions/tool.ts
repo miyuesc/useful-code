@@ -1,5 +1,4 @@
-// @ts-ignore
-import { Message, MessageBox } from 'element-ui'
+import { useMessage } from 'naive-ui'
 
 export type RawType =
   | 'string'
@@ -56,7 +55,7 @@ export const isPromise = <T = any>(val: unknown): val is Promise<T> => {
 }
 
 // 首字母大写
-export const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
+export const capitalizeFirstChar = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
 
 export type Page = {
   pageNo?: number
@@ -72,21 +71,12 @@ export type Page = {
 export function emptyTable(tableCallback?: () => unknown, page?: Page, msg?: string | Error): 0 {
   tableCallback && tableCallback()
   page && page.pageNo && (page.pageNo = 1)
-  msg && Message.error(typeof msg === 'string' ? msg : msg.toString())
+  msg && useMessage().error(typeof msg === 'string' ? msg : msg.toString())
   return 0 // 作为 total 的返回
 }
 
-/**
- * 通用二次确认窗
- * @param { string } message 提示信息
- * @param { string } title 标题
- * @param { string } type 类型
- * @return { Promise } function
- */
-export function confirmBox(message: string, title = '警告', type = 'warning'): void {
-  return MessageBox.confirm(message, title, {
-    type,
-    confirmButtonText: '确认',
-    cancelButtonText: '取消'
+export function sleep<T>(second: number, data: T): Promise<T> {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(data), second)
   })
 }

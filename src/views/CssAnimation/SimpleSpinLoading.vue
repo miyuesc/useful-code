@@ -2,7 +2,7 @@
 
 <template>
   <div>
-    <div class="page-desc">所有css动画均来自 Code Pen 和 GitHub</div>
+    <div class="page-desc">当前页动画来自 Code Pen 和 GitHub</div>
     <div class="spin-loading-list">
       <div class="loader">
         <div class="loader-inner ball-pulse">
