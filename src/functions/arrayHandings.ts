@@ -1,4 +1,4 @@
-import { getRawType, notEmpty, notNull } from './tool'
+import { getRawType, isArray, notEmpty, notNull } from './tool'
 
 export type TreeNode = Record<string, any>
 
@@ -76,7 +76,7 @@ export type Arr2MapProps = {
 
 /**
  * 一维对象数组转对象，用于 校验 或者 formatter
- * @param {*} arr 对象数组
+ * @param {*[]} arr 对象数组
  * @param {{label: string, value: string}} props 参数配置
  * @return {{[string]:string|boolean}}
  */
@@ -108,13 +108,13 @@ export type CascadeArr2MapProps = Arr2MapProps & {
 /**
  * 级联对象数组转对象，用于 校验 或者 formatter
  * 例如 [{label: '123', value: 1, children: [{label: '124', value: 2}]}] 转换为 {1: '123', 2: '124'} 或者 {1: '123', '1-2': '124'}
- * @param {*} arr 对象数组
- * @param { props } props 参数配置 分隔符
- * @param { string } props.label 作为返回对象对应的键名的属性值
- * @param { string } props.value 作为返回对象的键的值
- * @param { boolean } props.cascadeKey 是否拼接
- * @param { string } props.separator 拼接符
- * @param { string } prefix 前缀
+ * @param { TreeNode[] } [arr] 对象数组
+ * @param { CascadeArr2MapProps } [props] 参数配置 分隔符
+ * @param { string } [props.label] 作为返回对象对应的键名的属性值
+ * @param { string } [props.value] 作为返回对象的键的值
+ * @param { boolean } [props.cascadeKey] 是否拼接
+ * @param { string } [props.separator] 拼接符
+ * @param { string } [prefix] 前缀
  * @return {{[string]:string|boolean}}
  */
 export function cascadeArr2map(
@@ -157,16 +157,17 @@ export function cascadeArr2map(
 
 /**
  * 根据条件函数删除元素，返回新数组
- * @param { *[] } arr
+ * @param { unknown } arr
  * @param { Function } fn
  * @param { ?boolean } modifyMemory 修改内存地址
+ * @returns { undefined | unknown[] }
  */
 export function removeArrayItem(
-  arr: unknown[],
+  arr: unknown,
   fn: (...args: any) => boolean,
   modifyMemory?: boolean
 ): unknown[] | undefined {
-  if (!arr || getRawType(arr) !== 'array') {
+  if (!arr || !isArray(arr)) {
     return
   }
   if (modifyMemory) {

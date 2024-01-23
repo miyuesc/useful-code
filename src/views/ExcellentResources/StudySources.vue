@@ -59,6 +59,11 @@
 
   const tableColumns: DataTableColumns<SourceItem> = [
     {
+      title: t('sources.Name'),
+      minWidth: 200,
+      key: 'name'
+    },
+    {
       title: t('sources.Author'),
       key: 'author',
       minWidth: 200,
@@ -71,11 +76,6 @@
           }
         )
       }
-    },
-    {
-      title: t('sources.Name'),
-      minWidth: 200,
-      key: 'name'
     },
     {
       title: t('sources.Website'),
@@ -113,14 +113,10 @@
     },
     {
       title: t('sources.Description'),
-      minWidth: 300,
+      minWidth: 100,
       key: 'desc'
     }
   ]
-
-  const goToSource = (source: SourceItem) => {
-    window.open(source.website, '_blank')
-  }
 </script>
 
 <template>

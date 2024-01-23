@@ -9,6 +9,11 @@ export type RawType =
   | 'function'
   | 'regexp'
   | 'date'
+  | 'symbol'
+  | 'map'
+  | 'set'
+  | 'weakmap'
+  | 'weakset'
 
 export const NOOP = (): void => {}
 
@@ -18,7 +23,7 @@ export const NOOP = (): void => {}
 export const NO = (): false => false
 
 /**
- * 简易非空校验
+ * 变量、对象、数组 简易非空校验
  * @param {*} val
  * @return boolean
  */
@@ -35,16 +40,21 @@ export function notEmpty(val: any): boolean {
   return true
 }
 
+/**
+ * 非空判断
+ * @param {*} val
+ * @return boolean
+ */
 export function notNull(val: unknown): boolean {
   return val !== undefined && val !== null
 }
 
 export const toTypeString = (value: unknown): string => Object.prototype.toString.call(value)
-export function getRawType(value: any): RawType {
+export const getRawType = (value: any): RawType => {
   return toTypeString(value).slice(8, -1).toLowerCase() as RawType
 }
 
-export const isArray = Array.isArray
+export const isArray = Array.isArray || ((arg: unknown) => getRawType(arg) === 'array')
 export const isObject = (val: unknown): val is Record<any, any> =>
   val !== null && typeof val === 'object'
 export const isPlainObject = (val: unknown): val is object => getRawType(val) === 'object'
@@ -75,7 +85,7 @@ export function emptyTable(tableCallback?: () => unknown, page?: Page, msg?: str
   return 0 // 作为 total 的返回
 }
 
-export function sleep<T>(second: number, data: T): Promise<T> {
+export function sleep<T>(second = 3000, data?: T): Promise<T | undefined> {
   return new Promise((resolve) => {
     setTimeout(() => resolve(data), second)
   })
