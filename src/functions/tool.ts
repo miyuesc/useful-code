@@ -1,5 +1,3 @@
-import { useMessage } from 'naive-ui'
-
 export type RawType =
   | 'string'
   | 'array'
@@ -27,14 +25,14 @@ export const NO = (): false => false
  * @param {*} val
  * @return boolean
  */
-export function notEmpty(val: any): boolean {
+export function notEmpty(val: unknown): boolean {
   if (!notNull(val)) {
     return false
   }
-  if (getRawType(val) === 'array') {
+  if (isArray(val)) {
     return !!val.length
   }
-  if (getRawType(val) === 'object') {
+  if (isObject(val)) {
     return !!Object.keys(val).length
   }
   return true
@@ -50,40 +48,37 @@ export function notNull(val: unknown): boolean {
 }
 
 export const toTypeString = (value: unknown): string => Object.prototype.toString.call(value)
-export const getRawType = (value: any): RawType => {
+export const getRawType = (value: unknown): RawType => {
   return toTypeString(value).slice(8, -1).toLowerCase() as RawType
 }
 
-export const isArray = Array.isArray || ((arg: unknown) => getRawType(arg) === 'array')
+export const isUndefined = (val: unknown): val is undefined => typeof val === 'undefined'
+export const isString = (val: unknown): val is string => typeof val === 'string'
+export const isBoolean = (val: unknown): val is boolean => typeof val === 'boolean'
+export const isNumber = (val: unknown): val is number => typeof val === 'number'
+export const isFunction = (val: unknown): val is Function => typeof val === 'function'
+export const isSymbol = (val: unknown): val is symbol => typeof val === 'symbol'
+export const isArray =
+  Array.isArray || ((val: unknown): val is unknown[] => getRawType(val) === 'array')
+export const isMap = (val: unknown): val is Map<any, any> => toTypeString(val) === '[object Map]'
+export const isSet = (val: unknown): val is Set<any> => toTypeString(val) === '[object Set]'
+export const isDate = (val: unknown): val is Date => toTypeString(val) === '[object Date]'
+export const isRegExp = (val: unknown): val is RegExp => toTypeString(val) === '[object RegExp]'
+export const isPlainObject = (val: unknown): val is object =>
+  toTypeString(val) === '[object Object]'
 export const isObject = (val: unknown): val is Record<any, any> =>
   val !== null && typeof val === 'object'
-export const isPlainObject = (val: unknown): val is object => getRawType(val) === 'object'
-export const isDate = (val: unknown): val is Date => getRawType(val) === 'date'
-export const isFunction = (val: unknown): val is Function => typeof val === 'function'
+
 export const isPromise = <T = any>(val: unknown): val is Promise<T> => {
-  return isObject(val) && isFunction(val.then) && isFunction(val.catch)
+  return (
+    (isObject(val) || isFunction(val)) &&
+    isFunction((val as any).then) &&
+    isFunction((val as any).catch)
+  )
 }
 
 // 首字母大写
 export const capitalizeFirstChar = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
-
-export type Page = {
-  pageNo?: number
-  pageSize?: number
-}
-/**
- * 重置一个空表格
- * @param tableCallback 处理表格为空
- * @param page 分页数据的引用地址
- * @param { string | Error } msg 错误信息
- * @return { number } total 返回数据总数，总是返回 0
- */
-export function emptyTable(tableCallback?: () => unknown, page?: Page, msg?: string | Error): 0 {
-  tableCallback && tableCallback()
-  page && page.pageNo && (page.pageNo = 1)
-  msg && useMessage().error(typeof msg === 'string' ? msg : msg.toString())
-  return 0 // 作为 total 的返回
-}
 
 export function sleep<T>(second = 3000, data?: T): Promise<T | undefined> {
   return new Promise((resolve) => {

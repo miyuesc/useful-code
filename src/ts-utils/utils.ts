@@ -1,25 +1,20 @@
-export const isUndefined = (val: unknown): val is undefined => typeof val === 'undefined'
-export const isString = (val: unknown): val is string => typeof val === 'string'
-export const isBoolean = (val: unknown): val is boolean => typeof val === 'boolean'
-export const isNumber = (val: unknown): val is number => typeof val === 'number'
-export const isFunction = (val: unknown): val is Function => typeof val === 'function'
-export const isSymbol = (val: unknown): val is symbol => typeof val === 'symbol'
+import { useMessage } from "naive-ui";
 
-export const toTypeString = (value: unknown): string => Object.prototype.toString.call(value)
 
-export const isPlainObject = (val: unknown): val is object =>
-  toTypeString(val) === '[object Object]'
-export const isObject = (val: unknown): val is Record<any, any> =>
-  val !== null && typeof val === 'object'
-export const isMap = (val: unknown): val is Map<any, any> => toTypeString(val) === '[object Map]'
-export const isSet = (val: unknown): val is Set<any> => toTypeString(val) === '[object Set]'
-export const isDate = (val: unknown): val is Date => toTypeString(val) === '[object Date]'
-export const isRegExp = (val: unknown): val is RegExp => toTypeString(val) === '[object RegExp]'
-
-export const isPromise = <T = any>(val: unknown): val is Promise<T> => {
-  return (
-    (isObject(val) || isFunction(val)) &&
-    isFunction((val as any).then) &&
-    isFunction((val as any).catch)
-  )
+export type Page = {
+  pageNo?: number
+  pageSize?: number
+}
+/**
+ * 重置一个空表格
+ * @param tableCallback 处理表格为空
+ * @param page 分页数据的引用地址
+ * @param { string | Error } msg 错误信息
+ * @return { number } total 返回数据总数，总是返回 0
+ */
+export function emptyTable(tableCallback?: () => unknown, page?: Page, msg?: string | Error): 0 {
+  tableCallback && tableCallback()
+  page && page.pageNo && (page.pageNo = 1)
+  msg && useMessage().error(typeof msg === 'string' ? msg : msg.toString())
+  return 0 // 作为 total 的返回
 }
