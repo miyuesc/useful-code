@@ -1,0 +1,53 @@
+.task-dashboard__wrapper {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+
+  --panel-bg-color: #f5f6f8;
+  --panel-bg-hover-color: rgba(3,14,44,.04);
+  --panel-bg-selected-color: rgba(48, 232, 133, 0.68);
+  --panel-radius: 12px;
+  --panel-min-width: 240px;
+  --panel-padding: 20px;
+  --panel-gap: 20px;
+}
+
+.task-board__container {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.task-board__list-wrapper {
+  display: flex;
+  flex-wrap: nowrap;
+  width: 100%;
+  height: 100%;
+  .create-task-panel {
+    margin-left: var(--panel-gap);
+    flex-shrink: 0;
+  }
+}
+
+.task-board__panel {
+  width: 20%;
+  min-width: var(--panel-min-width);
+  height: 100%;
+  background-color: var(--panel-bg-color);
+  border-radius: var(--panel-radius);
+  padding: var(--panel-padding);
+
+  & + .task-board__panel {
+    margin-left: var(--panel-gap);
+  }
+
+  &:hover {
+    background-color: var(--panel-bg-hover-color);
+  }
+  &.is-selected {
+    background-color: var(--panel-bg-selected-color) !important;
+  }
+}
