@@ -33,7 +33,7 @@ const addChild = (name: string, moduleKey: string, parent?: string) => {
       menusObject[parent] = {
         name: parent,
         path: `/${parent}`,
-        component: modules[parent] || (() => import('@/staticViews/ChildrenRouterView.vue')),
+        component: modules[parent] || (() => import('@/static-views/ChildrenRouterView.vue')),
         meta: { translateName: translator('menus', parent) },
         children: [{ ...childMenu, meta }]
       }

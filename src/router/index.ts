@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory, type RouteRecordRaw } from 'vue-router'
 import menusObject, { formatMenusObjectToArray } from '@/router/menu-util'
-import PersonalHomePage from '@/staticViews/PersonalHomePage.vue'
+import PersonalHomePage from '@/static-views/PersonalHomePage.vue'
 
 const routes: RouteRecordRaw[] = [
   {
