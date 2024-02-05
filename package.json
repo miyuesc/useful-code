@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --open",
     "build": "vue-tsc && vite build",
     "preview": "vite preview"
   },
@@ -13,6 +13,8 @@
     "@vueuse/core": "10.2.0",
     "axios": "^1.6.5",
     "chance": "^1.1.11",
+    "echarts": "^5.4.3",
+    "echarts-liquidfill": "^3.1.0",
     "lodash.debounce": "^4.0.8",
     "lodash.throttle": "^4.1.1",
     "lucide-vue-next": "^0.292.0",

@@ -77,7 +77,12 @@ h3 {
   background-color: var(--content-container-bg);
   border-radius: var(--main-radius);
 
-  >div.content-body {
+  div.page-desc {
+    padding: 8px 20px;
+    font-size: 16px;
+    color: #333;
+  }
+  > div.content-body {
     position: absolute;
     left: var(--content-padding);
     top: var(--content-padding);

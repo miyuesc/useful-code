@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { shallowRef } from 'vue'
+  import { ref, shallowRef } from 'vue'
   import { NButton, NSpace } from 'naive-ui'
   import { Chance } from 'chance'
   import MVirtualList from '@/components/VirtualList/index.vue'
@@ -45,7 +45,7 @@
 
   const items = generateMultipleRandomItems(10000)
 
-  const filteredList = shallowRef<ListItem[]>(items)
+  const filteredList = ref<ListItem[]>(items)
   const visualListRef = shallowRef<InstanceType<typeof MVirtualList> | null>(null)
   const hVisualListRef = shallowRef<InstanceType<typeof MVirtualList> | null>(null)
   const mVisualListRef = shallowRef<InstanceType<typeof MVirtualList> | null>(null)
@@ -66,7 +66,7 @@
     filteredList.value.splice(0, 0, ...generateMultipleRandomItems(10))
   }
   const appendData = () => {
-    filteredList.value.splice(filteredList.value.length - 1, 0, ...generateMultipleRandomItems(10))
+    filteredList.value.splice(filteredList.value.length, 0, ...generateMultipleRandomItems(10))
   }
 </script>
 

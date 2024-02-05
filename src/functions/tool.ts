@@ -44,7 +44,7 @@ export function notEmpty(val: unknown): boolean {
  * @return boolean
  */
 export function notNull(val: unknown): boolean {
-  return val !== undefined && val !== null
+  return !isNull(val) && !isUndefined(val)
 }
 
 export const toTypeString = (value: unknown): string => Object.prototype.toString.call(value)
@@ -52,6 +52,7 @@ export const getRawType = (value: unknown): RawType => {
   return toTypeString(value).slice(8, -1).toLowerCase() as RawType
 }
 
+export const isNull = (val: unknown): val is null => val === null
 export const isUndefined = (val: unknown): val is undefined => typeof val === 'undefined'
 export const isString = (val: unknown): val is string => typeof val === 'string'
 export const isBoolean = (val: unknown): val is boolean => typeof val === 'boolean'
