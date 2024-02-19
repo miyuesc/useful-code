@@ -3,6 +3,7 @@
   import { NButton, NSpace } from 'naive-ui'
   import { Chance } from 'chance'
   import MVirtualList from '@/components/VirtualList/index.vue'
+  import { GenericComponentInstance } from '@/ts-utils/generic-component'
 
   interface ListItem {
     id: string
@@ -46,9 +47,18 @@
   const items = generateMultipleRandomItems(10000)
 
   const filteredList = ref<ListItem[]>(items)
-  const visualListRef = shallowRef<InstanceType<typeof MVirtualList> | null>(null)
-  const hVisualListRef = shallowRef<InstanceType<typeof MVirtualList> | null>(null)
-  const mVisualListRef = shallowRef<InstanceType<typeof MVirtualList> | null>(null)
+  // const visualListRef = useVirtualListRef<ListItem[]>()
+  // const hVisualListRef = useVirtualListRef<ListItem[]>()
+  // const mVisualListRef = useVirtualListRef<ListItem[]>()
+  const visualListRef = shallowRef<GenericComponentInstance<typeof MVirtualList<ListItem>> | null>(
+    null
+  )
+  const hVisualListRef = shallowRef<GenericComponentInstance<typeof MVirtualList<ListItem>> | null>(
+    null
+  )
+  const mVisualListRef = shallowRef<GenericComponentInstance<typeof MVirtualList<ListItem>> | null>(
+    null
+  )
 
   const scrollToIdx = () => {
     visualListRef.value?.scrollToIndex(50)

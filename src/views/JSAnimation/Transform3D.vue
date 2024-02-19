@@ -12,23 +12,27 @@
     position: relative;
     perspective: 1000px;
     transform-style: preserve-3d;
+    background: #1b2735;
   }
   .center,
   .guide {
     position: absolute;
-    left: 300px;
-    top: 200px;
   }
   .center {
     width: 400px;
     height: 400px;
-    background: #1b2735;
+    left: calc(50% - 200px);
+    top: calc(50% - 200px);
     z-index: 1;
+    background: #4896f1;
+    border-radius: 50%;
   }
   .guide {
-    width: 200px;
-    height: 200px;
-    transform: rotateY(30deg) skewX(20deg);
+    width: 480px;
+    height: 480px;
+    left: calc(50% - 240px);
+    top: calc(50% - 240px);
+    transform: rotateX(45deg) rotateZ(20deg) skewX(-40deg) translateY(130px) translateX(92px);
     border-radius: 50%;
     border: 2px solid #00ff00;
     z-index: 2;

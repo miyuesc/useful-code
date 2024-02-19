@@ -2,15 +2,16 @@
   "compilerOptions": {
     "baseUrl": "./",
     "target": "ESNext",
-    "useDefineForClassFields": true,
+    "lib": ["ESNext", "DOM"],
     "module": "ESNext",
     "moduleResolution": "Node",
+    "useDefineForClassFields": true,
     "strict": true,
     "jsx": "preserve",
+    "jsxImportSource": "vue",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "esModuleInterop": true,
-    "lib": ["ESNext", "DOM"],
     "skipLibCheck": true,
     "noEmit": true,
     "paths": {
