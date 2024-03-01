@@ -1,1 +1,0 @@
-import{_ as c,o as t,c as _,D as a,E as n,a as s}from"./index-6ddd7161.js";const d={},o=e=>(a("data-v-3a3e20f3"),e=e(),n(),e),r={class:"parent"},p=o(()=>s("div",{class:"center"},null,-1)),i=o(()=>s("div",{class:"guide"},null,-1)),l=[p,i];function f(e,u){return t(),_("div",r,l)}const v=c(d,[["render",f],["__scopeId","data-v-3a3e20f3"]]);export{v as default};
