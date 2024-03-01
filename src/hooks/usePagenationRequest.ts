@@ -1,37 +1,37 @@
-import { ref } from 'vue'
+import { Ref, ref } from 'vue'
 
-export type ResponseData = {
-  result?: unknown[]
+export type ResponseData<T> = {
+  result?: T[]
   totalNum?: number
   msg?: string
 }
 
 export type DataRequest = (search?: unknown) => Promise<unknown>
-export type ResponseDataTransfer = (response: unknown) => ResponseData
+export type ResponseDataTransfer = <T>(response: unknown) => ResponseData<T>
 export type Page = {
   pageNo: number
   pageSize: number
 }
 export type ErrorHandling = (errorMsg?: string) => unknown
 
-export default function (
+export default function <T extends object = {}, S extends object = {}>(
   httpRequest: DataRequest,
   responseTransfer?: ResponseDataTransfer,
   errorHanding?: ErrorHandling
 ) {
-  const tableData = ref<unknown[]>([])
+  const tableData = ref<T[]>([]) as Ref<T[]>
   const page = ref<Page>({
     pageNo: 1,
     pageSize: 10
   })
   const total = ref<number>(0)
 
-  const getTableData = async <T extends {}>(searchForm?: T) => {
+  const getTableData = async (searchForm?: S) => {
     try {
       const data = await httpRequest({ ...searchForm, ...page.value })
 
       if (responseTransfer) {
-        const { result, totalNum } = responseTransfer(data)
+        const { result, totalNum } = responseTransfer<T>(data)
 
         if (result && result.length) {
           tableData.value = result
@@ -40,7 +40,7 @@ export default function (
           emptyTableData()
         }
       } else {
-        const { result, totalNum, msg } = data as ResponseData
+        const { result, totalNum, msg } = data as ResponseData<T>
 
         if (result && result.length) {
           tableData.value = result
