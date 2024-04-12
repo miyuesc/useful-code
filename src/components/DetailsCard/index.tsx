@@ -12,6 +12,7 @@ export type DetailPropItem = {
   onlyRender?: boolean
   render?: (value: unknown) => VNodeChild
   format?: (propKey: string, value: unknown) => string
+  html?: string
 }
 
 export type RenderDetailPropItem = Omit<DetailPropItem, 'format' | 'hidden'> & { index: number }

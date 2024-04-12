@@ -81,8 +81,73 @@ export const isPromise = <T = any>(val: unknown): val is Promise<T> => {
 // 首字母大写
 export const capitalizeFirstChar = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
 
+// 延迟
 export function sleep<T>(second = 3000, data?: T): Promise<T | undefined> {
   return new Promise((resolve) => {
     setTimeout(() => resolve(data), second)
   })
+}
+
+// 简易深克隆
+export function simpleClone<T>(source: T): T {
+  if (isPlainObject(source)) {
+    const target: Partial<T> = {}
+
+    for (const sourceKey in source) {
+      const item = source[sourceKey]
+
+      if (Array.isArray(item)) {
+        const arrayItem = []
+        for (const i of item) {
+          arrayItem.push(simpleClone(i))
+        }
+        // @ts-expect-error
+        target[sourceKey] = arrayItem
+        break
+      }
+
+      if (isPlainObject(item)) {
+        const objectItem: Partial<typeof item> = {}
+        for (const k in item) {
+          objectItem[k] = simpleClone(item[k])
+        }
+        // @ts-expect-error
+        target[sourceKey] = objectItem
+        break
+      }
+
+      target[sourceKey] = item
+    }
+
+    return target as T
+  }
+
+  if (Array.isArray(source)) {
+    const target: any[] = []
+
+    for (const sourceItem of source) {
+      const item = source[sourceItem]
+      if (Array.isArray(item)) {
+        const arrayItem = []
+        for (const i of item) {
+          arrayItem.push(simpleClone(i))
+        }
+        target.push(arrayItem)
+        break
+      }
+      if (isPlainObject(item)) {
+        const objectItem: any = {}
+        for (const k in item) {
+          objectItem[k] = simpleClone((item as any)[k])
+        }
+        target.push(objectItem)
+        break
+      }
+      target.push(item)
+    }
+
+    return target as T
+  }
+
+  return source
 }
