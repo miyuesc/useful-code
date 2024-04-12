@@ -1,4 +1,4 @@
-import { computed, isRef, onMounted, ref } from 'vue'
+import { computed, isRef, onMounted, ref, toRaw } from 'vue'
 import type { Ref } from 'vue'
 
 /**
@@ -65,11 +65,11 @@ type YearPanelData = BasePanelData & {
 export type DayPanelData = {
   checkedType: DayWeekdayCheckedType
   daySpecify: number[]
-  weekSpecify: number[]
+  weekdaySpecify: number[]
   dayRange: RangeData
   weekdayRange: RangeData
   dayAverage: AverageData
-  weekAverage: AverageData
+  weekdayAverage: AverageData
   lastSpecialWeekday: number
   beforeEndSpacialDay: number
   nearestWeekdaySpecialDay: number
@@ -89,6 +89,8 @@ export const WeekdayOptions: Array<{ label: string; value: number }> = [
   { label: 'SATURDAY', value: 7 }
 ]
 
+const currentYear = new Date().getFullYear()
+
 const defaultCommonPanelData: CommonPanelData = {
   checkedType: 'every',
   specify: [1],
@@ -97,26 +99,29 @@ const defaultCommonPanelData: CommonPanelData = {
 }
 const defaultYearPanelData: YearPanelData = {
   checkedType: 'none',
-  specify: [1],
-  range: { from: 1, to: 2 },
-  average: { from: 1, step: 1 }
+  specify: [currentYear],
+  range: { from: currentYear, to: currentYear + 2 },
+  average: { from: currentYear, step: 1 }
 }
 const defaultDayWeekData: DayPanelData = {
   checkedType: 'everyDay',
   daySpecify: [1],
-  weekSpecify: [1],
+  weekdaySpecify: [1],
   dayRange: { from: 1, to: 2 },
   weekdayRange: { from: 1, to: 2 },
   dayAverage: { from: 1, step: 1 },
-  weekAverage: { from: 1, step: 1 },
+  weekdayAverage: { from: 1, step: 1 },
   beforeEndSpacialDay: 1,
   lastSpecialWeekday: 1,
   nearestWeekdaySpecialDay: 1,
   specialAWeekday: { idx: 1, weekday: 1 }
 }
 
-export const commonValueHandler = (value: string): CommonPanelData | YearPanelData => {
-  const panelData = JSON.parse(JSON.stringify(defaultCommonPanelData))
+export const commonValueHandler = (
+  value: string,
+  data?: CommonPanelData | YearPanelData
+): CommonPanelData | YearPanelData => {
+  const panelData = JSON.parse(JSON.stringify(data || defaultCommonPanelData))
 
   if (!value || value === '') {
     ;(panelData as YearPanelData).checkedType = 'none'
@@ -143,8 +148,12 @@ export const commonValueHandler = (value: string): CommonPanelData | YearPanelDa
 
   return panelData
 }
-export const daysValueHandler = (dayValue: string, weekdayValue: string): DayPanelData => {
-  const panelData = JSON.parse(JSON.stringify(defaultDayWeekData))
+export const daysValueHandler = (
+  dayValue: string,
+  weekdayValue: string,
+  data?: DayPanelData
+): DayPanelData => {
+  const panelData = JSON.parse(JSON.stringify(data || defaultDayWeekData))
 
   // day 和 weekday 必有一个 `?`，注意：当两个值一个为 ? 另一个为 * 时都表示每天
   if (weekdayValue === '?') {
@@ -198,7 +207,7 @@ export const daysValueHandler = (dayValue: string, weekdayValue: string): DayPan
     if (weekdayValue.indexOf('/') > -1) {
       panelData.checkedType = 'weekdayAverage'
       const [form, step] = weekdayValue.split('/')
-      panelData.weekAverage = { from: Number(form).valueOf(), step: Number(step).valueOf() }
+      panelData.weekdayAverage = { from: Number(form).valueOf(), step: Number(step).valueOf() }
       return panelData
     }
     if (weekdayValue.indexOf('L') > -1) {
@@ -221,7 +230,7 @@ export const daysValueHandler = (dayValue: string, weekdayValue: string): DayPan
     }
 
     panelData.checkedType = 'weekdaySpecify'
-    panelData.weekSpecify = weekdayValue.split(',')
+    panelData.weekdaySpecify = weekdayValue.split(',')
     return panelData
   }
 
@@ -230,7 +239,10 @@ export const daysValueHandler = (dayValue: string, weekdayValue: string): DayPan
 
 export const commonExpressionGenerator = (panelData: CommonPanelData | YearPanelData): string => {
   const { checkedType, specify, average, range } = panelData
-  if (checkedType === 'specify') return specify.join(',')
+  if (checkedType === 'specify') {
+    const sorts = [...specify].sort((a, b) => a - b)
+    return sorts.join(',')
+  }
   if (checkedType === 'range') return `${range.from}-${range.to}`
   if (checkedType === 'average') return `${average.from}/${average.step}`
   if (checkedType === 'none') return ''
@@ -240,11 +252,11 @@ export const daysExpressionGenerator = (panelData: DayPanelData): [string, strin
   const {
     checkedType,
     daySpecify,
-    weekSpecify,
+    weekdaySpecify,
     dayRange,
     weekdayRange,
     dayAverage,
-    weekAverage,
+    weekdayAverage,
     lastSpecialWeekday,
     beforeEndSpacialDay,
     nearestWeekdaySpecialDay,
@@ -273,15 +285,17 @@ export const daysExpressionGenerator = (panelData: DayPanelData): [string, strin
       break
     case 'weekdayAverage':
       dayValue = '?'
-      weekdayValue = `${weekAverage.from}/${weekAverage.step}`
+      weekdayValue = `${weekdayAverage.from}/${weekdayAverage.step}`
       break
     case 'daySpecify':
-      dayValue = daySpecify.join(',')
+      const sortDays = [...daySpecify].sort((a, b) => a - b)
+      dayValue = sortDays.join(',')
       weekdayValue = '?'
       break
     case 'weekdaySpecify':
+      const sortWeekdays = [...weekdaySpecify].sort((a, b) => a - b)
       dayValue = '?'
-      weekdayValue = weekSpecify.join(',')
+      weekdayValue = sortWeekdays.join(',')
       break
     case 'beforeEndSpacialDay':
       weekdayValue = '?'
@@ -312,7 +326,7 @@ export const daysExpressionGenerator = (panelData: DayPanelData): [string, strin
   return [dayValue, weekdayValue]
 }
 
-function useCronExpression(value?: string | Ref<string>, presetDefaultValue?: string) {
+export function useCronExpression(value?: string | Ref<string>, presetDefaultValue?: string) {
   const secondData = ref<CommonPanelData>(JSON.parse(JSON.stringify(defaultCommonPanelData)))
   const minuteData = ref<CommonPanelData>(JSON.parse(JSON.stringify(defaultCommonPanelData)))
   const hourData = ref<CommonPanelData>(JSON.parse(JSON.stringify(defaultCommonPanelData)))
@@ -339,12 +353,12 @@ function useCronExpression(value?: string | Ref<string>, presetDefaultValue?: st
     },
     set: (exp) => {
       const [secondV, minuteV, hourV, dayV, monthV, weekdayV, yearV] = exp.split(' ')
-      secondData.value = commonValueHandler(secondV) as CommonPanelData
-      minuteData.value = commonValueHandler(minuteV) as CommonPanelData
-      hourData.value = commonValueHandler(hourV) as CommonPanelData
-      monthData.value = commonValueHandler(monthV) as CommonPanelData
-      yearData.value = commonValueHandler(yearV)
-      dayWeekdayData.value = daysValueHandler(dayV, weekdayV)
+      secondData.value = commonValueHandler(secondV, toRaw(secondData.value)) as CommonPanelData
+      minuteData.value = commonValueHandler(minuteV, toRaw(minuteData.value)) as CommonPanelData
+      hourData.value = commonValueHandler(hourV, toRaw(hourData.value)) as CommonPanelData
+      monthData.value = commonValueHandler(monthV, toRaw(monthData.value)) as CommonPanelData
+      yearData.value = commonValueHandler(yearV, toRaw(yearData.value))
+      dayWeekdayData.value = daysValueHandler(dayV, weekdayV, toRaw(dayWeekdayData.value))
     }
   })
 
@@ -373,5 +387,3 @@ function useCronExpression(value?: string | Ref<string>, presetDefaultValue?: st
     initCronExpression
   }
 }
-
-export default useCronExpression
