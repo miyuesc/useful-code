@@ -1,5 +1,6 @@
-import { computed, isRef, onMounted, ref, toRaw } from 'vue'
+import { computed, isRef, onMounted, ref, watch } from 'vue'
 import type { Ref } from 'vue'
+import { simpleMerge } from '@/ts-utils/utils'
 
 /**
  * https://www.freeformatter.com/cron-expression-generator-quartz.html
@@ -121,7 +122,8 @@ export const commonValueHandler = (
   value: string,
   data?: CommonPanelData | YearPanelData
 ): CommonPanelData | YearPanelData => {
-  const panelData = JSON.parse(JSON.stringify(data || defaultCommonPanelData))
+  // const panelData = JSON.parse(JSON.stringify(data || defaultCommonPanelData))
+  const panelData = data ? simpleMerge(data, defaultCommonPanelData) : defaultCommonPanelData
 
   if (!value || value === '') {
     ;(panelData as YearPanelData).checkedType = 'none'
@@ -153,7 +155,8 @@ export const daysValueHandler = (
   weekdayValue: string,
   data?: DayPanelData
 ): DayPanelData => {
-  const panelData = JSON.parse(JSON.stringify(data || defaultDayWeekData))
+  // const panelData = JSON.parse(JSON.stringify(data || defaultDayWeekData))
+  const panelData = data ? simpleMerge(data, defaultDayWeekData) : defaultDayWeekData
 
   // day 和 weekday 必有一个 `?`，注意：当两个值一个为 ? 另一个为 * 时都表示每天
   if (weekdayValue === '?') {
@@ -230,7 +233,7 @@ export const daysValueHandler = (
     }
 
     panelData.checkedType = 'weekdaySpecify'
-    panelData.weekdaySpecify = weekdayValue.split(',')
+    panelData.weekdaySpecify = weekdayValue.split(',').map((i) => Number(i).valueOf())
     return panelData
   }
 
@@ -326,7 +329,11 @@ export const daysExpressionGenerator = (panelData: DayPanelData): [string, strin
   return [dayValue, weekdayValue]
 }
 
-export function useCronExpression(value?: string | Ref<string>, presetDefaultValue?: string) {
+export function useCronExpression(
+  value?: string | Ref<string>,
+  presetDefaultValue?: string,
+  callback?: Function
+) {
   const secondData = ref<CommonPanelData>(JSON.parse(JSON.stringify(defaultCommonPanelData)))
   const minuteData = ref<CommonPanelData>(JSON.parse(JSON.stringify(defaultCommonPanelData)))
   const hourData = ref<CommonPanelData>(JSON.parse(JSON.stringify(defaultCommonPanelData)))
@@ -343,32 +350,52 @@ export function useCronExpression(value?: string | Ref<string>, presetDefaultVal
     daysExpressionGenerator(dayWeekdayData.value)
   )
 
-  const cronExpression = computed({
-    get: () => {
-      let exp = `${secondValue.value} ${minuteValue.value} ${hourValue.value} ${dayWeekdayValue.value[0]} ${monthValue.value} ${dayWeekdayValue.value[1]}`
-      if (yearValue.value) {
-        exp += ` ${yearValue.value}`
-      }
-      return exp
-    },
-    set: (exp) => {
-      const [secondV, minuteV, hourV, dayV, monthV, weekdayV, yearV] = exp.split(' ')
-      secondData.value = commonValueHandler(secondV, toRaw(secondData.value)) as CommonPanelData
-      minuteData.value = commonValueHandler(minuteV, toRaw(minuteData.value)) as CommonPanelData
-      hourData.value = commonValueHandler(hourV, toRaw(hourData.value)) as CommonPanelData
-      monthData.value = commonValueHandler(monthV, toRaw(monthData.value)) as CommonPanelData
-      yearData.value = commonValueHandler(yearV, toRaw(yearData.value))
-      dayWeekdayData.value = daysValueHandler(dayV, weekdayV, toRaw(dayWeekdayData.value))
-    }
-  })
+  const cronExpression = ref('')
 
   const initCronExpression = (exp: string) => {
+    const values = exp.split(' ')
+    if (values.length < 6) return
     cronExpression.value = exp
+    const [secondV, minuteV, hourV, dayV, monthV, weekdayV, yearV] = values
+    secondData.value = commonValueHandler(secondV, secondData.value) as CommonPanelData
+    minuteData.value = commonValueHandler(minuteV, minuteData.value) as CommonPanelData
+    hourData.value = commonValueHandler(hourV, hourData.value) as CommonPanelData
+    monthData.value = commonValueHandler(monthV, monthData.value) as CommonPanelData
+    yearData.value = commonValueHandler(yearV, yearData.value)
+    dayWeekdayData.value = daysValueHandler(dayV, weekdayV, dayWeekdayData.value)
   }
 
-  onMounted(() =>
-    initCronExpression(isRef(value) ? value.value : value || presetDefaultValue || '* * * * * ?')
-  )
+  const initState = () => {
+    let exp = isRef(value) ? value.value : value
+    if (!exp) {
+      exp = presetDefaultValue || '* * * * * ?'
+    }
+    initCronExpression(exp)
+    callback && callback()
+  }
+
+  onMounted(() => {
+    initState()
+    watch(
+      () => [
+        secondValue.value,
+        minuteValue.value,
+        hourValue.value,
+        monthValue.value,
+        yearValue.value,
+        dayWeekdayValue.value
+      ],
+      () => {
+        let exp = `${secondValue.value} ${minuteValue.value} ${hourValue.value} ${dayWeekdayValue.value[0]} ${monthValue.value} ${dayWeekdayValue.value[1]}`
+        if (yearValue.value) {
+          exp += ` ${yearValue.value}`
+        }
+        cronExpression.value = exp
+        callback && callback()
+      },
+      { deep: true }
+    )
+  })
 
   return {
     cronExpression,

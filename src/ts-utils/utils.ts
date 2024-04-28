@@ -1,5 +1,4 @@
-import { useMessage } from "naive-ui";
-
+import { useMessage } from 'naive-ui'
 
 export type Page = {
   pageNo?: number
@@ -17,4 +16,23 @@ export function emptyTable(tableCallback?: () => unknown, page?: Page, msg?: str
   page && page.pageNo && (page.pageNo = 1)
   msg && useMessage().error(typeof msg === 'string' ? msg : msg.toString())
   return 0 // 作为 total 的返回
+}
+
+export const simpleMerge = <T extends Record<string, unknown>>(
+  target: T | Partial<T>,
+  source: T
+): T => {
+  for (const key in source) {
+    if (!target[key]) {
+      target[key] = source[key]
+    } else if (Array.isArray(target[key])) {
+      ;(target[key] as any[]) = [...new Set([...(source[key] as any[]), ...(target[key] as any[])])]
+    } else if (typeof target[key] === 'object') {
+      ;(target[key] as Record<string, unknown>) = {
+        ...(source[key] as Record<string, unknown>),
+        ...(target[key] as Record<string, unknown>)
+      }
+    }
+  }
+  return target as T
 }
