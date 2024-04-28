@@ -1,6 +1,7 @@
 import { computed, isRef, onMounted, ref, watch } from 'vue'
 import type { Ref } from 'vue'
 import { simpleMerge } from '@/ts-utils/utils'
+import { notNull } from '@/functions/tool'
 
 /**
  * https://www.freeformatter.com/cron-expression-generator-quartz.html
@@ -125,7 +126,7 @@ export const commonValueHandler = (
   // const panelData = JSON.parse(JSON.stringify(data || defaultCommonPanelData))
   const panelData = data ? simpleMerge(data, defaultCommonPanelData) : defaultCommonPanelData
 
-  if (!value || value === '') {
+  if (!notNull(value) || value === '') {
     ;(panelData as YearPanelData).checkedType = 'none'
     return panelData as YearPanelData
   }
@@ -142,10 +143,11 @@ export const commonValueHandler = (
   }
   if (value.indexOf('-') > -1) {
     panelData.checkedType = 'range'
-    const [form, to] = value.split('/')
+    const [form, to] = value.split('-')
     panelData.range = { from: Number(form).valueOf(), to: Number(to).valueOf() }
     return panelData
   }
+  panelData.checkedType = 'specify'
   panelData.specify = value.split(',').map((d) => Number(d).valueOf())
 
   return panelData
@@ -175,7 +177,7 @@ export const daysValueHandler = (
     }
     if (dayValue.indexOf('/') > -1) {
       panelData.checkedType = 'dayAverage'
-      const [form, step] = dayValue.split('/')
+      const [form, step] = dayValue.split('-')
       panelData.dayAverage = { from: Number(form).valueOf(), step: Number(step).valueOf() }
       return panelData
     }
@@ -354,9 +356,11 @@ export function useCronExpression(
 
   const initCronExpression = (exp: string) => {
     const values = exp.split(' ')
+    console.log(exp, values)
     if (values.length < 6) return
     cronExpression.value = exp
     const [secondV, minuteV, hourV, dayV, monthV, weekdayV, yearV] = values
+    console.log(secondV, minuteV, hourV, dayV, monthV, weekdayV, yearV)
     secondData.value = commonValueHandler(secondV, secondData.value) as CommonPanelData
     minuteData.value = commonValueHandler(minuteV, minuteData.value) as CommonPanelData
     hourData.value = commonValueHandler(hourV, hourData.value) as CommonPanelData
