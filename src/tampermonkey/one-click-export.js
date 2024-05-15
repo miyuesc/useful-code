@@ -1,9 +1,10 @@
 // ==UserScript==
-// @name         掘金 小册/专栏/收藏集 一键导出
-// @description  掘金 小册/专栏/收藏集 一键导出
-// @version      0.0.1
+// @name         掘金一键导出
+// @description  掘金 文章/小册/专栏/收藏集 一键导出
+// @version      0.0.3
 // @author       miyuefe
 // @namespace    https://github.com/miyuesc
+// @match        https://juejin.cn/post/*
 // @match        https://juejin.cn/book/*
 // @match        https://juejin.cn/column/*
 // @match        https://juejin.cn/collection/*
@@ -15,7 +16,7 @@ const svgDownloadBtn = `<svg viewBox="0 0 1024 1024" version="1.1" xmlns="http:/
     <path d="M811 84c76.215 0 138 61.785 138 138v610c0 76.215-61.785 138-138 138H201c-76.215 0-138-61.785-138-138V222c0-76.215 61.785-138 138-138h610zM511.753 300.322c-16.522 0-29.917 13.394-29.917 29.917v350.578L346.453 546.069l-0.563-0.547c-11.748-11.105-30.275-10.879-41.746 0.646-11.656 11.71-11.611 30.653 0.1 42.309l161.317 160.56 0.761 0.746c25.276 24.354 65.511 24.01 90.365-0.96l158.007-160.567 0.543-0.566c11.039-11.81 10.707-30.336-0.883-41.741-11.777-11.589-30.718-11.437-42.307 0.34L541.67 678.777V330.239c0-16.523-13.394-29.917-29.917-29.917z" fill="#1E80FF" p-id="5206"></path>
 </svg>`
 
-let pageFlag = 'book' // book, column, collection
+let pageFlag = 'book' // book, column, collection, post
 
 const baseUrl = 'https://api.juejin.cn'
 
@@ -178,6 +179,12 @@ function createCustomBtn() {
   newBtn.setAttribute('title', 'Download')
 
   newBtn.addEventListener('click', async () => {
+    if (pageFlag === 'post') {
+      const { title, content } = await getArticleMarkdownContent($nuxt.context.params.id)
+      await saveFile(0, title, content)
+      return
+    }
+
     const sections = await articlesGetterMap[pageFlag]()
 
     for (let i = 0; i < sections.length; i++) {
@@ -204,6 +211,9 @@ const timer = setInterval(() => {
     title = document.querySelector(
       '.collection-view>header.collection-header div.title div.content'
     )
+  } else if (window.location.href.startsWith('https://juejin.cn/post/')) {
+    pageFlag = 'post'
+    title = document.querySelector('article.article > h1.article-title')
   }
 
   if (title && title.querySelector(`#${btnId}`)) {
