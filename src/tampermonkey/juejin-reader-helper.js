@@ -95,13 +95,13 @@ const addDislikeBtn = (node) => {
     event.preventDefault()
     if (dislikeUserId) {
       try {
-        const { data } = await post(`${baseUrl}/recommend_api/v1/dislike/update`, {
+        const { err_no } = await post(`${baseUrl}/recommend_api/v1/dislike/update`, {
           item_ids: [dislikeUserId],
           item_type: 1,
           action: 1,
           dis_type: 1
         })
-        if (data.err_no === 0) {
+        if (err_no === 0) {
           window.$nuxt.$alertMsg('屏蔽成功！')
         } else {
           window.$nuxt.$error('屏蔽操作请求失败')
