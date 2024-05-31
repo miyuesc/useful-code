@@ -94,12 +94,22 @@ const addDislikeBtn = (node) => {
     event.stopPropagation()
     event.preventDefault()
     if (dislikeUserId) {
-      const { data } = await post(`${baseUrl}/recommend_api/v1/dislike/update`, {
-        item_ids: [dislikeUserId],
-        item_type: 1,
-        action: 1,
-        dis_type: 1
-      })
+      try {
+        const { data } = await post(`${baseUrl}/recommend_api/v1/dislike/update`, {
+          item_ids: [dislikeUserId],
+          item_type: 1,
+          action: 1,
+          dis_type: 1
+        })
+        if (data.err_no === 0) {
+          window.$nuxt.$alertMsg('屏蔽成功！')
+        } else {
+          window.$nuxt.$error('屏蔽操作请求失败')
+        }
+      } catch (e) {
+        console.error(e)
+        window.$nuxt.$error('屏蔽操作请求失败')
+      }
     }
   })
 
