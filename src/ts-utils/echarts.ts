@@ -1,6 +1,6 @@
 // 引入 echarts 核心模块，核心模块提供了 echarts 使用必须要的接口。
-import * as echarts from 'echarts/core'
-import { isNull, isObject, isString, isUndefined, notNull } from '@/functions/tool'
+import { graphic } from 'echarts/core'
+import { isNull, isObject, isUndefined, notNull } from '@/functions/tool'
 
 interface GradientColorStop {
   offset: number
@@ -17,7 +17,7 @@ export function eLinearGradient(
   cord?: boolean
 ) {
   const newColors: GradientColorStop[] | undefined = colorStepsHelper(colors)
-  return new echarts.graphic.LinearGradient(x1, y1, x2, y2, newColors, cord)
+  return new graphic.LinearGradient(x1, y1, x2, y2, newColors, cord)
 }
 // 径向渐变
 export function eRadialGradient(
@@ -28,7 +28,7 @@ export function eRadialGradient(
   cord?: boolean
 ) {
   const newColors: GradientColorStop[] | undefined = colorStepsHelper(colors)
-  return new echarts.graphic.RadialGradient(x, y, r, newColors, cord)
+  return new graphic.RadialGradient(x, y, r, newColors, cord)
 }
 
 // 辅助函数 1. 渐变色梯度
