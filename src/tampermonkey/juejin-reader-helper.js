@@ -103,6 +103,7 @@ const addDislikeBtn = (node) => {
         })
         if (err_no === 0) {
           window.$nuxt.$alertMsg('屏蔽成功！')
+          node.parentNode.removeChild(node)
         } else {
           window.$nuxt.$error('屏蔽操作请求失败')
         }

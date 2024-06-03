@@ -161,4 +161,6 @@ class EventEmitter {
   }
 }
 
-export default EventEmitter
+const emitter = new EventEmitter()
+
+export default emitter
