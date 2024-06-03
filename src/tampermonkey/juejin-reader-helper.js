@@ -119,12 +119,10 @@ const addDislikeBtn = (node) => {
   return btn
 }
 const articleListObserver = new MutationObserver((mutationList) => {
-  console.log('articleListObserver')
   const addNodes = mutationList.filter((m) => m.type === 'childList').map((mr) => mr.addedNodes[0])
   addNodes.forEach((node) => node && addDislikeBtn(node))
 })
 const articleWrapObserver = new MutationObserver((mutationList) => {
-  console.log('articleWrapObserver', mutationList[0].type)
   initDislikeObserver()
 })
 
@@ -165,7 +163,6 @@ const handleClick = (ul, btn) => {
 const createExpandBtn = (item) => {
   const childrenEl = [...(item.children || [])].find((el) => el.tagName === 'UL')
   if (childrenEl != null) {
-    console.log(childrenEl)
     const btn = document.createElement('span')
     btn.innerHTML = categoryExpandBtnSvg
     btn.className = 'word icon-rotate'
@@ -191,7 +188,6 @@ const processCategory = (ul) => {
 
 const initCategoryExpand = () => {
   if (!categoryExpandReg.test(location.href)) return
-  console.log(11111111)
   loopUntilElementFound('.article-sidebar .article-catalog .catalog-list', (categoryDom) => {
     setTimeout(() => {
       processCategory(categoryDom)
@@ -206,4 +202,4 @@ const initCategoryExpand = () => {
 
 initCategoryExpand()
 
-/*************************** 文章导航栏展开收起按钮 *************************/
+/***************************  *************************/

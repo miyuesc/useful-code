@@ -16,7 +16,7 @@ const svgDownloadBtn = `<svg viewBox="0 0 1024 1024" version="1.1" xmlns="http:/
     <path d="M811 84c76.215 0 138 61.785 138 138v610c0 76.215-61.785 138-138 138H201c-76.215 0-138-61.785-138-138V222c0-76.215 61.785-138 138-138h610zM511.753 300.322c-16.522 0-29.917 13.394-29.917 29.917v350.578L346.453 546.069l-0.563-0.547c-11.748-11.105-30.275-10.879-41.746 0.646-11.656 11.71-11.611 30.653 0.1 42.309l161.317 160.56 0.761 0.746c25.276 24.354 65.511 24.01 90.365-0.96l158.007-160.567 0.543-0.566c11.039-11.81 10.707-30.336-0.883-41.741-11.777-11.589-30.718-11.437-42.307 0.34L541.67 678.777V330.239c0-16.523-13.394-29.917-29.917-29.917z" fill="#1E80FF" p-id="5206"></path>
 </svg>`
 
-let pageFlag = 'book' // book, column, collection, post
+let pageFlag = 'column' // column, collection, post
 
 const baseUrl = 'https://api.juejin.cn'
 
@@ -81,12 +81,6 @@ const commonPollingRequest = async (
   return resList
 }
 
-// 小册目录列表
-const getSectionList = async () => {
-  const booklet_id = $nuxt.context.params.id
-  const { data } = await post(`${baseUrl}/booklet_api/v1/booklet/get`, { booklet_id })
-  return data.sections
-}
 // 专栏文章列表
 const getColumnsList = async () => {
   const column_id = $nuxt.context.params.id
@@ -128,16 +122,6 @@ const getArticleMarkdownContent = async (article_id) => {
   const { article_info } = data
   return { title: article_info.title, content: article_info.mark_content }
 }
-// 小册章节内容
-const getBookMarkdownContent = async (section_id) => {
-  const { data } = await post(
-    `${baseUrl}/booklet_api/v1/section/get`,
-    { section_id },
-    { credentials: 'include' }
-  )
-  const { title, markdown_show } = data.section
-  return { title, content: markdown_show }
-}
 
 // 文件保存
 async function saveFile(index, name, content) {
@@ -152,12 +136,10 @@ async function saveFile(index, name, content) {
 
 const btnId = 'download-juejin-book-monkey'
 const articlesGetterMap = {
-  book: getSectionList,
   column: getColumnsList,
   collection: getCollectionList
 }
 const contentGetterMap = {
-  book: getBookMarkdownContent,
   column: getArticleMarkdownContent,
   collection: getArticleMarkdownContent
 }
@@ -200,10 +182,7 @@ function createCustomBtn() {
 
 const timer = setInterval(() => {
   let title
-  if (window.location.href.startsWith('https://juejin.cn/book/')) {
-    pageFlag = 'book'
-    title = document.querySelector('.book-content__header>div.title')
-  } else if (window.location.href.startsWith('https://juejin.cn/column/')) {
+  if (window.location.href.startsWith('https://juejin.cn/column/')) {
     pageFlag = 'column'
     title = document.querySelector('.column-info>h1.title.web-title')
   } else if (window.location.href.startsWith('https://juejin.cn/collection/')) {
