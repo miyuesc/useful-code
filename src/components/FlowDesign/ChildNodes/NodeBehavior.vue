@@ -31,11 +31,7 @@
         <template #header>
           <span class="node-behavior__header">添加节点</span>
         </template>
-        <div class="node-behavior__btn">
-          <n-button circle size="large" @click="emitClick('task')">审批</n-button>
-          <n-button circle size="large" @click="emitClick('cc')">抄送</n-button>
-          <n-button circle size="large" @click="emitClick('condition')">条件</n-button>
-        </div>
+        <div class="node-behavior__btn"></div>
       </n-popover>
     </div>
   </div>

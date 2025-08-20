@@ -60,7 +60,6 @@
   }
   const removeCurrentNode = async () => {
     const valid = await props.removeValidator(computedTaskNode.value)
-    console.log('valid', valid)
     if (valid) {
       removeNode(computedTaskNode)
     }

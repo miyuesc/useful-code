@@ -176,8 +176,6 @@
       background-color: var(--node-border-corlor);
       z-index: 0;
     }
-
-
     &:last-child::after,
     &:first-child::after {
       content: '';
