@@ -1,0 +1,1 @@
+import{_ as a,o as n,c as t,a as s}from"./index-1acac433.js";const _={},o={class:"parent"};function c(r,e){return n(),t("div",o,[...e[0]||(e[0]=[s("div",{class:"center"},null,-1),s("div",{class:"guide"},null,-1)])])}const l=a(_,[["render",c],["__scopeId","data-v-3a3e20f3"]]);export{l as default};
