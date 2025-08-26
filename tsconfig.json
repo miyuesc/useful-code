@@ -2,7 +2,11 @@
   "compilerOptions": {
     "baseUrl": "./",
     "target": "ESNext",
-    "lib": ["ESNext", "DOM"],
+    "lib": [
+      "ESNext",
+      "DOM",
+      "dom"
+    ],
     "module": "ESNext",
     "moduleResolution": "Node",
     "useDefineForClassFields": true,

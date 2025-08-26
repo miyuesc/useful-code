@@ -233,6 +233,3 @@ export class ChartUtils {
     return { width: Math.floor(width), height: Math.floor(height) }
   }
 }
-
-// 导出类型
-export type { ChartDataItem, ChartOptions }

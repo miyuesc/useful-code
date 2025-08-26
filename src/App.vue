@@ -89,7 +89,7 @@
           </div>
         </div>
 
-        <nav-footer />
+        <!--        <nav-footer />-->
       </n-message-provider>
     </n-dialog-provider>
   </n-config-provider>

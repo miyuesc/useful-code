@@ -1,3 +1,4 @@
 export default {
-  WeightedCylinderModule: 'Weighted Cylinder'
+  WeightedCylinderModule: 'Weighted Cylinder',
+  CesiumAmapDemo: 'Cesium + Amap'
 }

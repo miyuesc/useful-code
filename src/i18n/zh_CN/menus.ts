@@ -10,6 +10,7 @@ export default {
   VirtualListModule: '虚拟列表',
   TaskDashboardModule: '任务看板',
   EchartsExModule: 'Echarts图表集',
+  CesiumAmapDemo: 'Cesium + 高德地图',
   //
   CssAnimation: 'CSS 动画效果',
   SimpleSpinLoading: 'CSS 简易加载动画',

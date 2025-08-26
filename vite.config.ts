@@ -13,5 +13,14 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src/')
     }
   },
-  server: {}
+  server: {
+    host: '0.0.0.0'
+  },
+  build: {
+    // 处理Cesium的大文件
+    chunkSizeWarningLimit: 2000,
+    rollupOptions: {
+      output: {}
+    }
+  }
 })
