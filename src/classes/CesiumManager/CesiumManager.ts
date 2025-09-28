@@ -10,7 +10,14 @@
  * files and plugins:
  * cesium-helpers: https://github.com/geoblocks/cesium-helpers
  */
-import type { Viewer, UrlTemplateImageryProvider, ImageryLayer } from 'cesium'
+import type {
+  Viewer,
+  CesiumWidget,
+  UrlTemplateImageryProvider,
+  ImageryLayer,
+  HeadingPitchRollValues,
+  DirectionUp
+} from 'cesium'
 
 const Cesium = window.Cesium
 
@@ -22,8 +29,12 @@ export interface CesiumManagerOptions {
   container?: string | HTMLElement
   // 透传给 Viewer 的参数
   viewerOptions?: Viewer.ConstructorOptions
+  // 使用默认UI控件
+  useUI?: boolean
   // 是否在构造时自动初始化 Viewer，默认 true
   autoInit?: boolean
+  // 是否使用右旋转控制
+  useRightRotate?: boolean
 }
 
 /**
@@ -37,13 +48,13 @@ export interface AMapImageTemplateOptions {
   // 指定服务轮询参数，默认 ['01', '02', '03', '04']
   subdomains?: string[]
   // 指定语言， 默认中文 'zh_cn'
-  lang: 'zh_cn' | 'en'
+  lang?: 'zh_cn' | 'en'
   // 高德地图服务地图风格类型，'6': 卫星影像; '7': 道路图; '8': 道路图(背景透明)
-  mapStyle: 6 | 7 | 8
+  mapStyle?: 6 | 7 | 8
   // 指定尺寸控制参数。 '1': 256*256; '2': 512*512
-  scl: '1' | '2'
+  scl?: '1' | '2'
   // 指定类型参数。'0': 默认; '4': 只有注记; '8': 只有道路
-  ltype: '0' | '4' | '8'
+  ltype?: '0' | '4' | '8'
 }
 
 /**
@@ -51,10 +62,12 @@ export interface AMapImageTemplateOptions {
  * 管理 Cesium Viewer、高德图层和 3D Tiles 模型
  */
 export default class CesiumManager {
-  public viewer: Viewer | null = null
+  public viewer: Viewer | CesiumWidget | null = null
   private container: string | HTMLElement
   private viewerOptions?: Viewer.ConstructorOptions
   private autoInit: boolean
+  private useUI: boolean
+  private useRightRotate: boolean
 
   private layers: Map<string, { provider: UrlTemplateImageryProvider; imageryLayer: ImageryLayer }>
   private models: Map<string, any>
@@ -63,6 +76,8 @@ export default class CesiumManager {
     this.container = options?.container ?? 'cesiumContainer'
     this.viewerOptions = options?.viewerOptions || {}
     this.autoInit = options?.autoInit ?? true
+    this.useUI = options?.useUI ?? true
+    this.useRightRotate = options?.useRightRotate ?? false
 
     this.layers = new Map()
     this.models = new Map()
@@ -70,12 +85,16 @@ export default class CesiumManager {
     if (this.autoInit) {
       this.initViewer()
     }
+
+    if (this.useRightRotate) {
+      this.toggleCameraControlMethod(true)
+    }
   }
 
   /**
    * 初始化 Cesium Viewer
    */
-  public initViewer(): Viewer {
+  public initViewer(): Viewer | CesiumWidget {
     if (this.viewer) return this.viewer
 
     const container =
@@ -101,20 +120,21 @@ export default class CesiumManager {
 
     const options = { ...defaultOptions, ...this.viewerOptions }
 
-    this.viewer = new Cesium.Viewer(container, options) as Viewer
-
-    console.log(Cesium.CameraEventType)
-    console.log(this.viewer.scene.screenSpaceCameraController)
-    // this.viewer.scene.screenSpaceCameraController.zoomEventTypes = [
-    //   Cesium.CameraEventType.WHEEL,
-    //   Cesium.CameraEventType.PINCH
-    // ]
-    // this.viewer.scene.screenSpaceCameraController.tiltEventTypes = [
-    //   Cesium.CameraEventType.PINCH,
-    //   Cesium.CameraEventType.RIGHT_DRAG
-    // ]
+    if (this.useUI) {
+      this.viewer = new Cesium.Viewer(container, options) as Viewer
+    } else {
+      this.viewer = new Cesium.CesiumWidget(container, options) as CesiumWidget
+    }
 
     return this.viewer
+  }
+
+  /**
+   * 判断当前 Viewer 是否为全功能版本
+   * @returns {boolean}
+   */
+  public isFullViewer(): boolean {
+    return this.viewer instanceof Cesium.Viewer
   }
 
   /**
@@ -130,6 +150,71 @@ export default class CesiumManager {
       }
     }
     this.viewer = null
+  }
+
+  ///////////////////////////// 操作相关
+  /**
+   * 切换相机的鼠标控制方法
+   * {@link https://cesium.com/learn/cesiumjs/ref-doc/global.html?classFilter=CameraEventType#CameraEventType}
+   * {@link https://cesium.com/learn/cesiumjs/ref-doc/global.html?classFilter=KeyboardEventModifier#KeyboardEventModifier}
+   */
+  public toggleCameraControlMethod(rightRotate?: boolean): void {
+    if (!this.viewer) return
+
+    const cameraController = this.viewer.scene.screenSpaceCameraController
+    if (!cameraController) return
+
+    const { WHEEL, PINCH, RIGHT_DRAG, LEFT_DRAG, MIDDLE_DRAG } = Cesium.CameraEventType
+    const { CTRL } = Cesium.KeyboardEventModifier
+
+    if (rightRotate !== undefined) {
+      this.useRightRotate = rightRotate
+    } else {
+      this.useRightRotate = !this.useRightRotate
+    }
+
+    if (this.useRightRotate) {
+      cameraController.zoomEventTypes = [WHEEL, PINCH]
+      cameraController.tiltEventTypes = [PINCH, RIGHT_DRAG]
+    } else {
+      cameraController.zoomEventTypes = [RIGHT_DRAG, WHEEL, PINCH]
+      cameraController.tiltEventTypes = [
+        MIDDLE_DRAG,
+        PINCH,
+        { eventType: LEFT_DRAG, modifier: CTRL },
+        { eventType: RIGHT_DRAG, modifier: CTRL }
+      ]
+    }
+  }
+
+  /**
+   * 移动视图到指定坐标
+   */
+  public moveToCoordinates(
+    longitude: number,
+    latitude: number,
+    height: number,
+    orientation?: HeadingPitchRollValues | DirectionUp
+  ): void {
+    if (!this.viewer) {
+      this.initViewer()
+    }
+
+    const destination = Cesium.Cartesian3.fromDegrees(longitude, latitude, height)
+
+    console.log('移动视图到:', destination)
+
+    if (!orientation) {
+      console.log('移动视图到:', destination)
+      this.viewer!.camera.setView({ destination })
+      return
+    }
+
+    console.log('移动视图到:', destination, orientation)
+    this.viewer!.camera.setView({
+      destination,
+      orientation
+    })
   }
 
   ///////////////////////////// 图层相关
@@ -240,9 +325,23 @@ export default class CesiumManager {
 
     this.models.set(modelId, modelLayer)
 
-    console.log(modelLayer)
-
     return modelLayer
+  }
+
+  /**
+   * 加载超图在线服务
+   */
+  public async loadSuperMapOnlineModel(url: string, modelId: string) {
+    if (!url) {
+      return new Error('CesiumManager: url 不能为空')
+    }
+    if (!this.viewer) {
+      this.initViewer()
+    }
+
+    const scene = this.viewer!.scene
+
+    const layers = await scene.open(url)
   }
 
   ///////////////////////////// 版本相关

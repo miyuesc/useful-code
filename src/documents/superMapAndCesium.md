@@ -11,3 +11,6 @@
 
 - PeterLu(法克鸡丝)博客教程: https://www.cnblogs.com/fuckgiser/p/5706842.html; 超图大牛作品，国内较早的深入研究教程，该教程比较老，是2016年编写的，但写的很深入很底层。
 - 超图cesium官方示例：http://support.supermap.com.cn:8090/webgl/examples/webgl/examples.html#layer；示例很多很全，开源免费。
+
+
+- Cesium SuperMap 问题调研与实现方法汇总：https://segmentfault.com/a/1190000040577369

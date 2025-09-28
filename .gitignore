@@ -24,3 +24,4 @@ dist-ssr
 *.sw?
 
 public/localModels
+public/localModels2
